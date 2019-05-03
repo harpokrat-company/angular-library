@@ -1,7 +1,7 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
     autoWatch: true,
     basePath: "",
@@ -15,6 +15,9 @@ module.exports = function(config) {
       fixWebpackSourcePaths: true,
       reports: ["html", "lcovonly"],
     },
+    files: [
+      {pattern: "./src/test.ts", watched: false},
+    ],
     frameworks: ["jasmine", "@angular-devkit/build-angular"],
     logLevel: config.LOG_INFO,
     plugins: [
