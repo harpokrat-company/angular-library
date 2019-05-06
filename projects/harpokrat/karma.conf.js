@@ -15,9 +15,6 @@ module.exports = function(config) {
       fixWebpackSourcePaths: true,
       reports: ["html", "lcovonly"],
     },
-    files: [
-      {pattern: "./src/test.ts", watched: false},
-    ],
     frameworks: ["jasmine", "@angular-devkit/build-angular"],
     logLevel: config.LOG_INFO,
     plugins: [
