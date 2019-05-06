@@ -8,4 +8,10 @@ export class ResourceIdentifier {
 
   meta?: Meta;
 
+  constructor(type: string, id: string, meta?: Meta) {
+    this.type = type;
+    this.id = id;
+    this.meta = meta;
+  }
 }
+

@@ -1,7 +1,8 @@
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Response} from '../models/response';
+import {PrimaryData, Response} from '../models/response';
 import {Injectable} from '@angular/core';
+import {Resource} from '../models/resource';
 
 type QueryParams = HttpParams | { [param: string]: string | string[] };
 type RequestHeaders = HttpHeaders | { [param: string]: string | string[] };
@@ -9,45 +10,40 @@ type RequestHeaders = HttpHeaders | { [param: string]: string | string[] };
 @Injectable({
   providedIn: 'root'
 })
-export abstract class ApiService<R = any> {
+export class ApiService {
 
-  protected constructor(private httpClient: HttpClient,
-                        private uri: string) {
+  protected constructor(private httpClient: HttpClient) {
   }
 
-  buildUrl(path: string): string {
-    let url = this.uri;
-    if (url.endsWith('/')) {
-      url = url.substring(0, url.length - 1);
-    }
-    if (path.startsWith('/')) {
-      path = path.substring(1);
-    }
-    return url + '/' + path;
-  }
-
-  request<T = R>(method: string, path?: string, options?: {
+  request<T = any, DataT extends PrimaryData<T> = Resource<T>>(method: string, url: string, options?: {
     body?: any;
     headers?: RequestHeaders,
     params?: QueryParams
-  }): Observable<Response<T>> {
-    const url = path ? this.buildUrl(path) : this.uri;
-    return this.httpClient.request<Response<T>>(method, url, options);
+  }): Observable<Response<T, DataT>> {
+    return this.httpClient.request<Response<T, DataT>>(method, url, options);
   }
 
-  get<T = R>(path?: string, params?: QueryParams, headers?: HttpHeaders): Observable<Response<T>> {
-    return this.request<T>('GET', path, {params, headers});
+  get<T = any>(url: string, params?: QueryParams, headers?: HttpHeaders): Observable<Response<T, Resource<T>>> {
+    return this.request<T, Resource<T>>('GET', url, {params, headers});
   }
 
-  post<T = R>(body?: any, path?: string, params?: QueryParams, headers?: HttpHeaders): Observable<Response<T>> {
-    return this.request<T>('POST', path, {body, params, headers});
+  getMany<T = any>(url: string, params?: QueryParams, headers?: HttpHeaders): Observable<Response<T, Resource<T>[]>> {
+    return this.request<T, Resource<T>[]>('GET', url, {params, headers});
   }
 
-  put<T = R>(body?: any, path?: string, params?: QueryParams, headers?: HttpHeaders): Observable<Response<T>> {
-    return this.request<T>('PUT', path, {body, params, headers});
+  post<T = any>(url: string, body?: Resource<T>, params?: QueryParams, headers?: HttpHeaders): Observable<Response<T, Resource<T>>> {
+    return this.request<T, Resource<T>>('POST', url, {body, params, headers});
   }
 
-  delete<T = R>(path?: string, params?: QueryParams, headers?: HttpHeaders): Observable<Response<T>> {
-    return this.request<T>('DELETE', path, {params, headers});
+  patch<T = any>(url: string, body?: any, params?: QueryParams, headers?: HttpHeaders): Observable<Response<T, Resource<T>>> {
+    return this.request<T, Resource<T>>('PATCH', url, {body, params, headers});
+  }
+
+  put<T = any>(url: string, body?: any, params?: QueryParams, headers?: HttpHeaders): Observable<Response<T, Resource<T>>> {
+    return this.request<T, Resource<T>>('PUT', url, {body, params, headers});
+  }
+
+  delete(url: string, params?: QueryParams, headers?: HttpHeaders): Observable<Response<null, Resource<null>>> {
+    return this.request<null, Resource<null>>('DELETE', url, {params, headers});
   }
 }

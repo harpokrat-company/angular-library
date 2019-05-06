@@ -1,14 +1,14 @@
 import {Inject, Injectable} from '@angular/core';
 import {ApiService} from './api.service';
-import {HttpClient} from '@angular/common/http';
+import {ResourceService} from './resource.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TokenService extends ApiService {
+export class TokenService extends ResourceService {
 
-  constructor(httpClient: HttpClient,
+  constructor(apiService: ApiService,
               @Inject('serverUrl') serverUrl: string) {
-    super(httpClient, `${serverUrl}/json-web-tokens`);
+    super(apiService, `${serverUrl}/json-web-tokens`);
   }
 }

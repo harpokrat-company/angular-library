@@ -1,14 +1,14 @@
 import {Inject, Injectable} from '@angular/core';
+import {ResourceService} from './resource.service';
 import {ApiService} from './api.service';
-import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService extends ApiService {
+export class UserService extends ResourceService {
 
-  constructor(httpClient: HttpClient,
+  constructor(apiService: ApiService,
               @Inject('serverUrl') serverUrl: string) {
-    super(httpClient, `${serverUrl}/users`);
+    super(apiService, `${serverUrl}/users`);
   }
 }

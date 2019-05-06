@@ -1,14 +1,14 @@
 import {Inject, Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {ResourceService} from './resource.service';
 import {ApiService} from './api.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PasswordService extends ApiService {
+export class PasswordService extends ResourceService {
 
-  constructor(httpClient: HttpClient,
+  constructor(apiService: ApiService,
               @Inject('serverUrl') serverUrl: string) {
-    super(httpClient, `${serverUrl}/passwords`);
+    super(apiService, `${serverUrl}/passwords`);
   }
 }
