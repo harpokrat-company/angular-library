@@ -8,7 +8,7 @@ import {ApiService} from './api.service';
 export class PasswordService extends ApiService {
 
   constructor(httpClient: HttpClient,
-              @Inject('servcerUrl') serverUrl: string) {
+              @Inject('serverUrl') serverUrl: string) {
     super(httpClient, `${serverUrl}/passwords`);
   }
 }

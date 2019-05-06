@@ -10,7 +10,6 @@ describe('PasswordService', () => {
       provide: 'serverUrl',
       useValue: 'http://test'
     }]
-
   }));
 
   it('should be created', () => {

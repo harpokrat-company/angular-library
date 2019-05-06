@@ -8,7 +8,7 @@ import {HttpClient} from '@angular/common/http';
 export class UserService extends ApiService {
 
   constructor(httpClient: HttpClient,
-              @Inject('servcerUrl') serverUrl: string) {
+              @Inject('serverUrl') serverUrl: string) {
     super(httpClient, `${serverUrl}/users`);
   }
 }
