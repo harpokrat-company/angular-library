@@ -19,7 +19,7 @@ describe('UserService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should have thr correct uri', () => {
+  it('should have the correct uri', () => {
     const service: UserService = TestBed.get(UserService);
     expect(service.baseUri).toEqual(`${URL}/users`);
   });

@@ -49,7 +49,7 @@ describe('ApiService', () => {
   });
 
   describe('PUT method', () => {
-    it('should perform an http POST request and retrieve data', () => {
+    it('should perform an http PUT request and retrieve data', () => {
       const service: ApiService = TestBed.get(ApiService);
       const http: HttpTestingController = TestBed.get(HttpTestingController);
       const body = Resource.of({value: 'test'});
@@ -65,7 +65,7 @@ describe('ApiService', () => {
   });
 
   describe('PATCH method', () => {
-    it('should perform an http POST request and retrieve data', () => {
+    it('should perform an http PATCH request and retrieve data', () => {
       const service: ApiService = TestBed.get(ApiService);
       const http: HttpTestingController = TestBed.get(HttpTestingController);
       const body = Resource.of({value: 'test'});
