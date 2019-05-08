@@ -5,7 +5,7 @@ module.exports = function(config) {
   config.set({
     autoWatch: true,
     basePath: "",
-    browsers: ["Chrome"],
+    browsers: ["Chrome_no_sandbox"],
     client: {
       clearContext: false, // leave Jasmine Spec Runner output visible in browser
     },
@@ -14,6 +14,12 @@ module.exports = function(config) {
       dir: require("path").join(__dirname, "../../coverage/harpokrat"),
       fixWebpackSourcePaths: true,
       reports: ["html", "lcovonly"],
+    },
+    customLaunchers: {
+      Chrome_no_sandbox: {
+        base: "Chrome",
+        flags: ["--no-sandbox"],
+      },
     },
     frameworks: ["jasmine", "@angular-devkit/build-angular"],
     logLevel: config.LOG_INFO,
@@ -30,3 +36,4 @@ module.exports = function(config) {
     singleRun: false,
   });
 };
+
