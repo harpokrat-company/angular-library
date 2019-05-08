@@ -7,8 +7,7 @@ import {ResourceService} from './resource.service';
 })
 export class TokenService extends ResourceService {
 
-  constructor(apiService: ApiService,
-              @Inject('serverUrl') serverUrl: string) {
+  constructor(apiService: ApiService, @Inject('serverUrl') serverUrl: string) {
     super(apiService, `${serverUrl}/json-web-tokens`);
   }
 }

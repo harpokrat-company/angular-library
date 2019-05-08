@@ -13,7 +13,6 @@ describe('TokenService', () => {
       provide: 'serverUrl',
       useValue: URL
     }]
-
   }));
 
   it('should be created', () => {

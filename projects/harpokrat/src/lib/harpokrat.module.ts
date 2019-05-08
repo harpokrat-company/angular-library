@@ -1,13 +1,19 @@
 import {ModuleWithProviders, NgModule} from '@angular/core';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {TokenInterceptor} from './interceptors/token.interceptor';
+import {RouterModule} from '@angular/router';
 
-@NgModule()
+@NgModule({
+  imports: [
+    RouterModule
+  ],
+})
 export class HarpokratModule {
 
   static forRoot(
-    {
-      serverUrl = 'https://api.harpokrat.com'
-    }: {
-      serverUrl?: string
+    serverUrl,
+    auth: {
+      loginRouterPath: string
     }): ModuleWithProviders {
     if (serverUrl.endsWith('/')) {
       serverUrl = serverUrl.substring(0, serverUrl.length - 1);
@@ -17,6 +23,13 @@ export class HarpokratModule {
       providers: [{
         provide: 'serverUrl',
         useValue: serverUrl
+      }, {
+        provide: 'loginRouterPath',
+        useValue: auth.loginRouterPath
+      }, {
+        provide: HTTP_INTERCEPTORS,
+        useClass: TokenInterceptor,
+        multi: true
       }]
     };
   }
