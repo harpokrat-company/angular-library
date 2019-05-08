@@ -18,7 +18,7 @@ module.exports = function (config) {
     customLaunchers: {
       Chrome_no_sandbox: {
         base: "Chrome",
-        flags: ["--no-sandbox", "--headless", "--disable-gpu", "--remote-debugging-port=9222", "--single-run"],
+        flags: ["--no-sandbox", "--headless", "--remote-debugging-port=9222"],
       },
     },
     frameworks: ["jasmine", "@angular-devkit/build-angular"],
