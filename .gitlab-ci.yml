@@ -1,7 +1,7 @@
 image: weboaks/node-karma-protractor-chrome
 
 before_script:
-- npm install
+  - npm install
 
 cache:
   paths:
@@ -9,4 +9,4 @@ cache:
 
 test:
   script:
-  - npm test
+    - npm test
