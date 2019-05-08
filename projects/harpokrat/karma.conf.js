@@ -1,7 +1,7 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
     autoWatch: true,
     basePath: "",
@@ -18,7 +18,7 @@ module.exports = function(config) {
     customLaunchers: {
       Chrome_no_sandbox: {
         base: "Chrome",
-        flags: ["--no-sandbox"],
+        flags: ["--no-sandbox", "--headless", "--disable-gpu", "--remote-debugging-port=9222", "--single-run"],
       },
     },
     frameworks: ["jasmine", "@angular-devkit/build-angular"],
@@ -32,8 +32,7 @@ module.exports = function(config) {
     ],
     port: 9876,
     reporters: ["progress", "kjhtml"],
-    restartOnFileChange: true,
-    singleRun: false,
+    restartOnFileChange: false,
+    singleRun: true,
   });
 };
-
