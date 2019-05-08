@@ -1,4 +1,4 @@
-export * from './domain/public-api';
+export * from './domain/public_api';
 
 export * from './error';
 export * from './jsonapi';

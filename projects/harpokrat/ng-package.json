@@ -1,0 +1,9 @@
+{
+  "name": "@harpokrat/lib",
+  "version": "0.0.1",
+  "ngPackage": {
+    "lib": {
+      "entryFile": "public_api.ts"
+    }
+  }
+}
