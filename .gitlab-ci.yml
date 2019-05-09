@@ -14,3 +14,7 @@ lint:
 test:
   script:
     - npm test
+
+build:
+  script:
+    - npm run build
