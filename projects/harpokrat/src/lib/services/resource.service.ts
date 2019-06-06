@@ -38,8 +38,9 @@ export abstract class ResourceService<T = any> {
     );
   }
 
-  create(): Observable<Resource<T>> {
-    return this.apiService.post<T>(this.uri).pipe(
+  create(attributes?: T): Observable<Resource<T>> {
+    const resource = Resource.of(attributes);
+    return this.apiService.post<T>(this.uri, resource).pipe(
       map(response => response.data),
       share()
     );

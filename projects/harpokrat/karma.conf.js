@@ -17,7 +17,7 @@ module.exports = function (config) {
     },
     customLaunchers: {
       Chrome_no_sandbox: {
-        base: "Chrome",
+        base: "Chromium",
         flags: ["--no-sandbox", "--headless", "--remote-debugging-port=9222"],
       },
     },

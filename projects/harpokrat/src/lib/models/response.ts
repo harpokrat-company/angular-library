@@ -27,4 +27,8 @@ export class Response<T = any, DataT extends PrimaryData<T> = PrimaryData<T>> {
     this.links = links;
     this.included = included;
   }
+
+  static of<T = any, DataT extends PrimaryData<T> = PrimaryData<T>>(data: DataT) {
+    return new Response<T, DataT>(data);
+  }
 }

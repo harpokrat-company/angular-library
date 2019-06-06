@@ -1,11 +1,12 @@
 import {ModuleWithProviders, NgModule} from '@angular/core';
-import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {TokenInterceptor} from './interceptors/token.interceptor';
 import {RouterModule} from '@angular/router';
 
 @NgModule({
   imports: [
-    RouterModule
+    RouterModule,
+    HttpClientModule
   ],
 })
 export class HarpokratModule {

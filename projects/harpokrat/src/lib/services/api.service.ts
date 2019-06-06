@@ -20,6 +20,9 @@ export class ApiService {
     headers?: RequestHeaders,
     params?: QueryParams
   }): Observable<Response<T, DataT>> {
+    if (options.body != null) {
+      options.body = Response.of(options.body);
+    }
     return this.httpClient.request<Response<T, DataT>>(method, url, options);
   }
 

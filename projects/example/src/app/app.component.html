@@ -1,0 +1,4 @@
+<button (click)="addUser()">Register User</button>
+<div *ngIf="userObservable | async as user">
+  <p>{{user.attributes.email}}</p>
+</div>
