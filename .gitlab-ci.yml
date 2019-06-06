@@ -9,7 +9,7 @@ cache:
 
 lint:
   script:
-    - npm run ng lint lint harpokrat
+    - npm run ng lint harpokrat
 
 test:
   script:
