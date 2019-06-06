@@ -1,12 +1,15 @@
 import {ApiService} from './api.service';
 import {Observable} from 'rxjs';
 import {Resource} from '../models/resource';
-import {map, share} from 'rxjs/operators';
 
 export abstract class ResourceService<T = any> {
 
   get baseUri() {
     return this.uri;
+  }
+
+  get api(): ApiService {
+    return this.apiService;
   }
 
   protected constructor(private apiService: ApiService,
@@ -25,38 +28,23 @@ export abstract class ResourceService<T = any> {
   }
 
   read(resourceId: string): Observable<Resource<T>> {
-    return this.apiService.get<T>(this.buildUrl(resourceId)).pipe(
-      map(response => response.data),
-      share()
-    );
+    return this.apiService.get<T>(this.buildUrl(resourceId));
   }
 
   readAll(): Observable<Resource<T>[]> {
-    return this.apiService.getMany<T>(this.uri).pipe(
-      map(response => response.data),
-      share()
-    );
+    return this.apiService.getMany<T>(this.uri);
   }
 
   create(attributes?: T): Observable<Resource<T>> {
     const resource = Resource.of(attributes);
-    return this.apiService.post<T>(this.uri, resource).pipe(
-      map(response => response.data),
-      share()
-    );
+    return this.apiService.post<T>(this.uri, resource);
   }
 
   update(resourceId: string): Observable<Resource<T>> {
-    return this.apiService.patch<T>(this.buildUrl(resourceId)).pipe(
-      map(response => response.data),
-      share()
-    );
+    return this.apiService.patch<T>(this.buildUrl(resourceId));
   }
 
   delete(resourceId: string): Observable<Resource<null>> {
-    return this.apiService.delete(this.buildUrl(resourceId)).pipe(
-      map(response => response.data),
-      share()
-    );
+    return this.apiService.delete(this.buildUrl(resourceId));
   }
 }

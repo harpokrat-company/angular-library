@@ -2,3 +2,7 @@
 <div *ngIf="userObservable | async as user">
   <p>{{user.attributes.email}}</p>
 </div>
+<button (click)="login()">Login</button>
+<div *ngIf="tokenObservable | async as token">
+  <p>{{token.attributes.payload}}</p>
+</div>

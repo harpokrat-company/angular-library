@@ -29,9 +29,9 @@ export class Token {
 
   token: string;
 
-  header: TokenHeader;
+  header?: TokenHeader;
 
-  payload: TokenPayload;
+  payload?: TokenPayload;
 
-  signature: string;
+  signature?: string;
 }

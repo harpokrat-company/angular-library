@@ -3,7 +3,8 @@ import {UserService} from '../../../harpokrat/src/lib/services/user.service';
 import {Observable} from 'rxjs';
 import {Resource} from '../../../harpokrat/src/lib/models/resource';
 import {User} from '../../../harpokrat/src/lib/models/domain/user';
-import {tap} from 'rxjs/operators';
+import {Token} from '../../../harpokrat/src/lib/models/domain/token';
+import {TokenService} from '../../../harpokrat/src/lib/services/token.service';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +14,10 @@ import {tap} from 'rxjs/operators';
 export class AppComponent {
 
   userObservable: Observable<Resource<User>>;
+  tokenObservable: Observable<Resource<Token>>;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService,
+              private tokenService: TokenService) {
   }
 
   addUser() {
@@ -23,11 +26,11 @@ export class AppComponent {
       password: 'abcd1234',
       firstName: 'Aled',
       lastName: 'Oskour'
-    }).pipe(tap((r) => {
-      console.log(r);
-    }, (e) => {
-      console.error(e);
-    }));
+    });
+  }
+
+  login() {
+    this.tokenObservable = this.tokenService.login('a@a.a', 'abcd1234');
   }
 
 }
