@@ -19,6 +19,6 @@ export class Resource<T = any> extends ResourceIdentifier {
   }
 
   static of<T = any>(attributes: T): Resource<T> {
-    return new Resource<T>(null, null, null, attributes, null, null);
+    return new Resource<T>(undefined, undefined, undefined, attributes);
   }
 }
