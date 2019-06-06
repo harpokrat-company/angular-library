@@ -23,20 +23,5 @@ describe('UserService', () => {
     const service: UserService = TestBed.get(UserService);
     expect(service.baseUri).toEqual(`${URL}/users`);
   });
-
-  // it('should create a user', () => {
-  //   const service: UserService = TestBed.get(UserService);
-  //   const email = 'test@test.test';
-  //   const firstName = 'TestFname';
-  //   const lastName = 'TestLname';
-  //   const password = 'Testpassword+123';
-  //   service.create({
-  //     email, firstName, lastName, password
-  //   }).subscribe(resource => {
-  //     expect(resource.attributes.email).toEqual(email);
-  //     expect(resource.attributes.firstName).toEqual(firstName);
-  //     expect(resource.attributes.lastName).toEqual(lastName);
-  //   });
-  // });
 });
 

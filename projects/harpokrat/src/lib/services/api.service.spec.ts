@@ -23,7 +23,7 @@ describe('ApiService', () => {
       const http: HttpTestingController = TestBed.get(HttpTestingController);
       const responseBody = Resource.of({value: 'test'});
       service.get(URL).subscribe((value => {
-        expect(value.data).toEqual(responseBody);
+        expect(value).toEqual(responseBody);
       }));
       const httpHandler = http.expectOne(URL);
       expect(httpHandler.request.method).toEqual('GET');
@@ -39,11 +39,11 @@ describe('ApiService', () => {
       const body = Resource.of({value: 'test'});
       const responseBody = Resource.of({value: 'body'});
       service.post(URL, body).subscribe((value => {
-        expect(value.data).toEqual(responseBody);
+        expect(value).toEqual(responseBody);
       }));
       const httpHandler = http.expectOne(URL);
       expect(httpHandler.request.method).toEqual('POST');
-      expect(httpHandler.request.body).toEqual(body);
+      expect(httpHandler.request.body.data).toEqual(body);
       httpHandler.flush(new Response(responseBody));
     });
   });
@@ -55,11 +55,11 @@ describe('ApiService', () => {
       const body = Resource.of({value: 'test'});
       const responseBody = Resource.of({value: 'body'});
       service.put(URL, body).subscribe((value => {
-        expect(value.data).toEqual(responseBody);
+        expect(value).toEqual(responseBody);
       }));
       const httpHandler = http.expectOne(URL);
       expect(httpHandler.request.method).toEqual('PUT');
-      expect(httpHandler.request.body).toEqual(body);
+      expect(httpHandler.request.body.data).toEqual(body);
       httpHandler.flush(new Response(responseBody));
     });
   });
@@ -71,11 +71,11 @@ describe('ApiService', () => {
       const body = Resource.of({value: 'test'});
       const responseBody = Resource.of({value: 'body'});
       service.patch(URL, body).subscribe((value => {
-        expect(value.data).toEqual(responseBody);
+        expect(value).toEqual(responseBody);
       }));
       const httpHandler = http.expectOne(URL);
       expect(httpHandler.request.method).toEqual('PATCH');
-      expect(httpHandler.request.body).toEqual(body);
+      expect(httpHandler.request.body.data).toEqual(body);
       httpHandler.flush(new Response(responseBody));
     });
   });
@@ -85,7 +85,7 @@ describe('ApiService', () => {
       const service: ApiService = TestBed.get(ApiService);
       const http: HttpTestingController = TestBed.get(HttpTestingController);
       service.delete(URL).subscribe((value => {
-        expect(value.data).toBeFalsy();
+        expect(value).toBeFalsy();
       }));
       const httpHandler = http.expectOne(URL);
       expect(httpHandler.request.method).toEqual('DELETE');
