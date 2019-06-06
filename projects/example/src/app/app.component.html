@@ -1,3 +1,5 @@
+<label for="email">email</label>
+<input id="email" [(ngModel)]="email" placeholder="email">
 <button (click)="addUser()">Register User</button>
 <div *ngIf="userObservable | async as user">
   <p>{{user.attributes.email}}</p>
@@ -5,4 +7,12 @@
 <button (click)="login()">Login</button>
 <div *ngIf="tokenObservable | async as token">
   <p>{{token.attributes.payload}}</p>
+</div>
+<button (click)="getPasswords()">Get Secrets</button>
+<div *ngIf="passwordObservables | async as passwords">
+  <p>{{passwords.toString()}}</p>
+</div>
+<button (click)="addPassword()">Add Secret</button>
+<div *ngIf="passwordObservable | async as password">
+  <p>{{password}}</p>
 </div>

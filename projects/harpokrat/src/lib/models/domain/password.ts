@@ -1,5 +1,5 @@
 export class Password {
 
-  blob: string;
+  content: string;
 
 }

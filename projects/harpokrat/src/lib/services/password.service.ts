@@ -9,6 +9,6 @@ export class PasswordService extends ResourceService {
 
   constructor(apiService: ApiService,
               @Inject('serverUrl') serverUrl: string) {
-    super(apiService, `${serverUrl}/passwords`);
+    super(apiService, `${serverUrl}/secrets`);
   }
 }
