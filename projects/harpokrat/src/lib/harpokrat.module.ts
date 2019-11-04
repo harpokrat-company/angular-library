@@ -2,12 +2,25 @@ import {ModuleWithProviders, NgModule} from '@angular/core';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {TokenInterceptor} from './interceptors/token.interceptor';
 import {RouterModule} from '@angular/router';
+import {LoginFormComponent} from './components/forms/login-form/login-form.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {CommonModule} from "@angular/common";
+import { ErrorAlertComponent } from './components/alerts/error-alert/error-alert.component';
+import { RegisterFormComponent } from './components/forms/register-form/register-form.component';
 
 @NgModule({
   imports: [
+    CommonModule,
+    FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
     RouterModule,
-    HttpClientModule
   ],
+  declarations: [LoginFormComponent, ErrorAlertComponent, RegisterFormComponent],
+  exports: [
+    LoginFormComponent,
+    RegisterFormComponent
+  ]
 })
 export class HarpokratModule {
 

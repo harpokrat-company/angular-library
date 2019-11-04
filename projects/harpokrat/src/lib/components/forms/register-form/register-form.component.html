@@ -1,0 +1,39 @@
+<form class="form-container" [formGroup]="registerForm" (ngSubmit)="onRegister()" *ngIf="registerForm">
+  <hpk-error-alert class="mb-3" *ngIf="error" [allowDismiss]="true"
+                   [text]="error" (dismissed)="error = null"></hpk-error-alert>
+  <div class="form-row">
+    <div class="col-12 col-md-6 form-group">
+      <label for="register-form--input--first-name">First Name</label>
+      <input id="register-form--input--first-name" type="text"
+             formControlName="firstName" placeholder="First Name" class="form-control">
+    </div>
+    <div class="col-12 col-md-6 form-group">
+      <label for="register-form--input--last-name">Last Name</label>
+      <input id="register-form--input--last-name" type="text"
+             formControlName="lastName" placeholder="Last Name" class="form-control">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="register-form--input--email">Email</label>
+    <input id="register-form--input--email" type="text"
+           formControlName="email" placeholder="Email" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="register-form--input--password">Password</label>
+    <input id="register-form--input--password" type="password"
+           formControlName="password" placeholder="Password" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="register-form--input--password-confirmation">Password Confirmation</label>
+    <input id="register-form--input--password-confirmation" type="password"
+           formControlName="passwordConfirmation" placeholder="Password Confirmation" class="form-control">
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-primary" [disabled]="registerForm.invalid || loading">
+      <span class="spinner-border spinner-border-sm" *ngIf="loading; else notLoading">
+        <span class="sr-only">Loading</span>
+      </span>
+      <ng-template #notLoading>Sign up</ng-template>
+    </button>
+  </div>
+</form>
