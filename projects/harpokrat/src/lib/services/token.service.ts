@@ -15,7 +15,7 @@ export class TokenService extends ResourceService {
   constructor(apiService: ApiService,
               @Inject('serverUrl') serverUrl: string,
               private authService: AuthService) {
-    super(apiService, `${serverUrl}/json-web-tokens`);
+    super(apiService, `${serverUrl}/json-web-tokens`, 'tokens');
   }
 
   login(email: string, password: string): Observable<Resource<Token>> {

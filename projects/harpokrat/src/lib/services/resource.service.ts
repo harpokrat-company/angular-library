@@ -13,7 +13,8 @@ export abstract class ResourceService<T = any> {
   }
 
   protected constructor(private apiService: ApiService,
-                        private uri: string) {
+                        private uri: string,
+                        private resourceType = undefined) {
   }
 
   buildUrl(path: string): string {
@@ -36,7 +37,7 @@ export abstract class ResourceService<T = any> {
   }
 
   create(attributes?: T): Observable<Resource<T>> {
-    const resource = Resource.of(attributes);
+    const resource = Resource.of(attributes, this.resourceType);
     return this.apiService.post<T>(this.uri, resource);
   }
 

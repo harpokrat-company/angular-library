@@ -43,7 +43,8 @@ export class LoginFormComponent implements OnInit {
           this.loading = false;
           this.login.emit(resource.attributes);
         },
-        () => {
+        (err) => {
+          console.error(err);
           this.error = 'Invalid email/password';
           this.loading = false;
         },

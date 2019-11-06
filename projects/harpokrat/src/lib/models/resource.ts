@@ -18,7 +18,7 @@ export class Resource<T = any> extends ResourceIdentifier {
     this.links = links;
   }
 
-  static of<T = any>(attributes: T): Resource<T> {
-    return new Resource<T>(undefined, undefined, undefined, attributes);
+  static of<T = any>(attributes: T, resourceType: string = undefined): Resource<T> {
+    return new Resource<T>(resourceType, undefined, undefined, attributes);
   }
 }

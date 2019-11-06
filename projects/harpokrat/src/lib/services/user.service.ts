@@ -10,6 +10,6 @@ export class UserService extends ResourceService<User> {
 
   constructor(apiService: ApiService,
               @Inject('serverUrl') serverUrl: string) {
-    super(apiService, `${serverUrl}/users`);
+    super(apiService, `${serverUrl}/users`, 'users');
   }
 }
