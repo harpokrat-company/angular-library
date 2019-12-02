@@ -1,6 +1,16 @@
 import {ApiService} from './api.service';
 import {Observable} from 'rxjs';
 import {Resource} from '../models/resource';
+import {ResourceDatasource} from "../datasource/resource-datasource";
+import {Datasource} from "../datasource/datasource";
+import {Relationships} from "../models/relationships";
+
+export interface PaginationOptions {
+
+  page?: number;
+
+  size?: number;
+}
 
 export abstract class ResourceService<T = any> {
 
@@ -14,7 +24,7 @@ export abstract class ResourceService<T = any> {
 
   protected constructor(private apiService: ApiService,
                         private uri: string,
-                        private resourceType = undefined) {
+                        private resourceType) {
   }
 
   buildUrl(path: string): string {
@@ -32,12 +42,15 @@ export abstract class ResourceService<T = any> {
     return this.apiService.get<T>(this.buildUrl(resourceId));
   }
 
-  readAll(): Observable<Resource<T>[]> {
-    return this.apiService.getMany<T>(this.uri);
+  readAll({page = 0, size = 20}: PaginationOptions = {}): Observable<Resource<T>[]> {
+    return this.apiService.getMany<T>(this.uri, {
+      'page[number]': (page + 1).toFixed(),
+      'page[size]': size.toFixed(),
+    });
   }
 
-  create(attributes?: T): Observable<Resource<T>> {
-    const resource = Resource.of(attributes, this.resourceType);
+  create(attributes?: T, relationships?: Relationships): Observable<Resource<T>> {
+    const resource = Resource.of(attributes, this.resourceType, relationships);
     return this.apiService.post<T>(this.uri, resource);
   }
 
@@ -47,5 +60,9 @@ export abstract class ResourceService<T = any> {
 
   delete(resourceId: string): Observable<Resource<null>> {
     return this.apiService.delete(this.buildUrl(resourceId));
+  }
+
+  asDatasource(): Datasource<T> {
+    return new ResourceDatasource<T>(this);
   }
 }

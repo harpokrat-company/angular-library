@@ -38,29 +38,26 @@ export class RegisterFormComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
       passwordConfirmation: ['', Validators.required],
-    }, {validators: RegisterFormComponent.checkPassword})
+    }, {validators: RegisterFormComponent.checkPassword});
   }
 
   onRegister() {
-    if (!this.loading) {
-      this.loading = true;
-      const {firstName, lastName, email, password} = this.registerForm.controls;
-      this.$userService.create({
-        firstName: firstName.value,
-        lastName: lastName.value,
-        email: email.value,
-        password: password.value,
-      }).subscribe(
-        (resource) => {
-          this.loading = false;
-          this.register.emit(resource.attributes)
-        },
-        () => {
-          this.error = 'An error occurred';
-          this.loading = false;
-        },
-      )
-    }
+    this.loading = true;
+    const {firstName, lastName, email, password} = this.registerForm.controls;
+    this.$userService.create({
+      firstName: firstName.value,
+      lastName: lastName.value,
+      email: email.value,
+      password: password.value,
+    }).subscribe(
+      (resource) => {
+        this.loading = false;
+        this.register.emit(resource.attributes)
+      },
+      () => {
+        this.error = 'An error occurred';
+        this.loading = false;
+      },
+    )
   }
-
 }

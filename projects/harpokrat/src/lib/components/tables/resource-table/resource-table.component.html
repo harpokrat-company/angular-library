@@ -1,0 +1,22 @@
+<ng-container *ngIf="renderSettingsObservable | async as settings">
+  <div class="text-center" *ngIf="settings.datasource.loading; else loaded">
+    <span class="spinner-border"></span>
+  </div>
+  <ng-template #loaded>
+    <table class="table">
+      <thead>
+      <tr>
+        <th *ngIf="settings.showIndex">ID</th>
+        <th *ngFor="let column of settings.columns">{{column}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let row of settings.rows; let i = index">
+        <td *ngIf="settings.showIndex">{{settings.datasource.page * settings.datasource.size + i + 1}}</td>
+        <td *ngFor="let column of row">{{column}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </ng-template>
+  <hpk-pager [datasource]="settings.datasource"></hpk-pager>
+</ng-container>

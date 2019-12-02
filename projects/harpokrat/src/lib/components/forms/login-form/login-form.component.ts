@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {TokenService} from "../../../services/token.service";
 import {Token} from "../../../models/domain/token";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'hpk-login-form',
@@ -35,21 +36,19 @@ export class LoginFormComponent implements OnInit {
   }
 
   onLogin() {
-    if (!this.loading) {
-      this.loading = true;
-      const {email, password} = this.loginForm.controls;
-      this.$tokenService.login(email.value, password.value).subscribe(
-        (resource) => {
-          this.loading = false;
-          this.login.emit(resource.attributes);
-        },
-        (err) => {
-          console.error(err);
-          this.error = 'Invalid email/password';
-          this.loading = false;
-        },
-      );
-    }
+    this.loading = true;
+    const {email, password} = this.loginForm.controls;
+    this.$tokenService.login(email.value, password.value).subscribe(
+      (resource) => {
+        this.loading = false;
+        this.login.emit(resource.attributes);
+      },
+      (err) => {
+        console.error(err);
+        this.error = 'Invalid email/password';
+        this.loading = false;
+      },
+    );
   }
 
 }

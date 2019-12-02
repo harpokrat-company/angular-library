@@ -1,6 +1,6 @@
 import {TestBed} from '@angular/core/testing';
 
-import {PasswordService} from './password.service';
+import {SecretService} from './secret.service';
 import {HttpClientModule} from '@angular/common/http';
 import {UserService} from './user.service';
 
@@ -16,12 +16,12 @@ describe('PasswordService', () => {
   }));
 
   it('should be created', () => {
-    const service: PasswordService = TestBed.get(PasswordService);
+    const service: SecretService = TestBed.get(SecretService);
     expect(service).toBeTruthy();
   });
 
   it('should have the correct uri', () => {
-    const service: UserService = TestBed.get(PasswordService);
+    const service: UserService = TestBed.get(SecretService);
     expect(service.baseUri).toEqual(`${URL}/passwords`);
   });
 });

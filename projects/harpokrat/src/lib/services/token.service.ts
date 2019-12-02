@@ -24,7 +24,7 @@ export class TokenService extends ResourceService {
       Authorization: `Basic ${encoded}`
     };
     return this.api.post<Token>(this.baseUri, null, null, header).pipe(
-      tap(token => this.authService.token = token.attributes.token),
+      tap(token => this.authService.token = token),
       shareReplay(1)
     );
   }

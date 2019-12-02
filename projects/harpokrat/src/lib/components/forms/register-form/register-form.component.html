@@ -1,6 +1,5 @@
-<form class="form-container" [formGroup]="registerForm" (ngSubmit)="onRegister()" *ngIf="registerForm">
-  <hpk-error-alert class="mb-3" *ngIf="error" [allowDismiss]="true"
-                   [text]="error" (dismissed)="error = null"></hpk-error-alert>
+<hpk-form [formGroup]="registerForm" [loading]="loading" [error]="error" submitTitle="Register"
+          (formSubmit)="onRegister()">
   <div class="form-row">
     <div class="col-12 col-md-6 form-group">
       <label for="register-form--input--first-name">First Name</label>
@@ -28,12 +27,4 @@
     <input id="register-form--input--password-confirmation" type="password"
            formControlName="passwordConfirmation" placeholder="Password Confirmation" class="form-control">
   </div>
-  <div class="btn-row">
-    <button class="btn btn-primary" [disabled]="registerForm.invalid || loading">
-      <span class="spinner-border spinner-border-sm" *ngIf="loading; else notLoading">
-        <span class="sr-only">Loading</span>
-      </span>
-      <ng-template #notLoading>Sign up</ng-template>
-    </button>
-  </div>
-</form>
+</hpk-form>

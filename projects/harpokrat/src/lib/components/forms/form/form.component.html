@@ -1,0 +1,13 @@
+<form class="form-container" [formGroup]="formGroup" (ngSubmit)="onSubmit()" *ngIf="formGroup">
+  <hpk-error-alert class="mb-3" *ngIf="error" [allowDismiss]="true"
+                   [text]="error" (dismissed)="error = null"></hpk-error-alert>
+  <ng-content></ng-content>
+  <div class="form-group">
+    <button class="btn btn-primary" [disabled]="formGroup.invalid || loading">
+      <span class="spinner-border spinner-border-sm" *ngIf="loading; else notLoading">
+        <span class="sr-only">Loading</span>
+      </span>
+      <ng-template #notLoading>{{submitTitle}}</ng-template>
+    </button>
+  </div>
+</form>

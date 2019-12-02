@@ -1,0 +1,6 @@
+<div class="d-flex flex-row">
+  <button type="button" class="btn btn-primary" (click)="previousPage()"
+          [disabled]="datasource.page <= 0">Previous</button>
+  <span class="mx-auto">Page {{datasource.page + 1}}</span>
+  <button type="button" class="btn btn-primary" (click)="nextPage()">Next</button>
+</div>

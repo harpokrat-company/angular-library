@@ -7,4 +7,11 @@
     <h3>Login</h3>
     <hpk-login-form></hpk-login-form>
   </div>
+  <ng-container *ngIf="authenticatedObservable | async">
+    <div class="my-3">
+      <h3>Create Secret</h3>
+      <hpk-secret-form></hpk-secret-form>
+    </div>
+    <hpk-secrets-table></hpk-secrets-table>
+  </ng-container>
 </div>

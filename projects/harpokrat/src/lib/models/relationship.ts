@@ -2,7 +2,7 @@ import {Links} from './links';
 import {Meta} from './meta';
 import {ResourceIdentifier} from './resource-identifier';
 
-type ResourceLinkage = null | ResourceIdentifier | ResourceIdentifier[];
+export type ResourceLinkage = null | ResourceIdentifier | ResourceIdentifier[];
 
 export class Relationship {
 
@@ -11,4 +11,12 @@ export class Relationship {
   data?: ResourceLinkage;
 
   meta?: Meta;
+
+  constructor(data?: ResourceLinkage) {
+    this.data = data;
+  }
+
+  static of(data: ResourceLinkage) {
+    return new Relationship(data);
+  }
 }
