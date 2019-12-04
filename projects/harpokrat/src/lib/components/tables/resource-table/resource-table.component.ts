@@ -1,8 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Datasource} from "../../../datasource/datasource";
 import {combineLatest, Observable, ReplaySubject, Subject} from "rxjs";
-import {exhaustMap, flatMap, map, switchMap} from "rxjs/operators";
-import {Data} from "@angular/router";
+import {map, switchMap} from "rxjs/operators";
 
 export interface ResourceTableColumnConfiguration {
 
@@ -30,7 +29,7 @@ interface ResourceTableRenderSettings {
 
   rows: any[][];
 
-  columns: string[];
+  columns: ResourceTableColumnConfiguration[];
 }
 
 @Component({
@@ -67,7 +66,7 @@ export class ResourceTableComponent implements OnInit {
         return (datasource.data as Observable<any[]>).pipe(map(d => ({
           showIndex,
           datasource: datasource,
-          columns: columns.map(c => c.name),
+          columns: columns,
           rows: d.map(d => {
             return columns.map(({name, key = name, selectValue = (v) => v,}) => {
               return selectValue(d[key]);
@@ -76,6 +75,19 @@ export class ResourceTableComponent implements OnInit {
         })));
       }),
     )
+  }
+
+  setSort(datasource: Datasource, property: string) {
+    if (datasource.sort === property) {
+      if (datasource.sortDescending) {
+        datasource.sort = undefined;
+      } else {
+        datasource.sortDescending = true;
+      }
+    } else {
+      datasource.sort = property;
+      datasource.sortDescending = false;
+    }
   }
 
   ngOnInit() {

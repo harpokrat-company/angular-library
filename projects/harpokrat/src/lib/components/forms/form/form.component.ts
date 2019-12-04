@@ -27,7 +27,6 @@ export class FormComponent implements OnInit {
 
   onSubmit() {
     if (!this.loading && this.formGroup.valid) {
-      console.log('lol');
       this.formSubmit.emit();
     }
   }

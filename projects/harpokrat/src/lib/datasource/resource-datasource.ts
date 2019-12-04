@@ -1,7 +1,7 @@
 import {Datasource} from "./datasource";
 import {BehaviorSubject, combineLatest, Observable} from "rxjs";
 import {ResourceService} from "../services/resource.service";
-import {flatMap, map, shareReplay} from "rxjs/operators";
+import {debounceTime, flatMap, map, shareReplay} from "rxjs/operators";
 import {Resource} from "../models/resource";
 
 export class ResourceDatasource<T = any> implements Datasource {
@@ -61,7 +61,7 @@ export class ResourceDatasource<T = any> implements Datasource {
   ) {
     this.$pageSubject = new BehaviorSubject<number>(0);
     this.$sizeSubject = new BehaviorSubject<number>(20);
-    this.$sortSubject = new BehaviorSubject<string>(null);
+    this.$sortSubject = new BehaviorSubject<string>(undefined);
     this.$sortDescendingSubject = new BehaviorSubject<boolean>(false);
     const changedObservable = combineLatest([
       this.$pageSubject,
@@ -71,10 +71,13 @@ export class ResourceDatasource<T = any> implements Datasource {
     ]);
     changedObservable.subscribe(() => this.$loading = true);
     this.$dataObservable = changedObservable.pipe(
-      flatMap(([page, size, sort, descending]) => {
+      debounceTime(100),
+      flatMap(([page, size, sort, sortDescending]) => {
         return this.service.readAll({
           page,
           size,
+          sort,
+          sortDescending,
         })
       }),
       shareReplay(1),

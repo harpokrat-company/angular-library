@@ -10,6 +10,10 @@ export interface PaginationOptions {
   page?: number;
 
   size?: number;
+
+  sort?: string;
+
+  sortDescending?: boolean;
 }
 
 export abstract class ResourceService<T = any> {
@@ -42,11 +46,15 @@ export abstract class ResourceService<T = any> {
     return this.apiService.get<T>(this.buildUrl(resourceId));
   }
 
-  readAll({page = 0, size = 20}: PaginationOptions = {}): Observable<Resource<T>[]> {
-    return this.apiService.getMany<T>(this.uri, {
+  readAll({page = 0, size = 20, sort = undefined, sortDescending = false}: PaginationOptions = {}): Observable<Resource<T>[]> {
+    const params = {
       'page[number]': (page + 1).toFixed(),
       'page[size]': size.toFixed(),
-    });
+    };
+    if (sort) {
+      params['sort'] = sortDescending ? `-${sort}` : sort;
+    }
+    return this.apiService.getMany<T>(this.uri, params);
   }
 
   create(attributes?: T, relationships?: Relationships): Observable<Resource<T>> {
