@@ -60,7 +60,7 @@ export class ResourceDatasource<T = any> implements Datasource {
     private readonly service: ResourceService<T>,
   ) {
     this.$pageSubject = new BehaviorSubject<number>(0);
-    this.$sizeSubject = new BehaviorSubject<number>(20);
+    this.$sizeSubject = new BehaviorSubject<number>(10);
     this.$sortSubject = new BehaviorSubject<string>(undefined);
     this.$sortDescendingSubject = new BehaviorSubject<boolean>(false);
     const changedObservable = combineLatest([
