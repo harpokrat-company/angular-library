@@ -22,6 +22,6 @@ describe('PasswordService', () => {
 
   it('should have the correct uri', () => {
     const service: UserService = TestBed.get(SecretService);
-    expect(service.baseUri).toEqual(`${URL}/passwords`);
+    expect(service.baseUri).toEqual(`${URL}/secrets`);
   });
 });
