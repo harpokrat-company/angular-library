@@ -13,7 +13,7 @@ const URL = 'http://localhost:8080';
 class ResourceServiceMock extends ResourceService<{ value: string }> {
 
   constructor(apiService: ApiService) {
-    super(apiService, URL);
+    super(apiService, URL, 'aled');
   }
 }
 
