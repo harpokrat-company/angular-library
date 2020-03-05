@@ -1,7 +1,7 @@
 import {Datasource} from "./datasource";
 import {BehaviorSubject, combineLatest, Observable} from "rxjs";
 import {ResourceService} from "../services/resource.service";
-import {debounceTime, flatMap, map, shareReplay} from "rxjs/operators";
+import {debounceTime, flatMap, map, shareReplay, switchMap} from "rxjs/operators";
 import {Resource} from "../models/resource";
 
 export class ResourceDatasource<T = any> implements Datasource {
@@ -72,7 +72,7 @@ export class ResourceDatasource<T = any> implements Datasource {
     changedObservable.subscribe(() => this.$loading = true);
     this.$dataObservable = changedObservable.pipe(
       debounceTime(100),
-      flatMap(([page, size, sort, sortDescending]) => {
+      switchMap(([page, size, sort, sortDescending]) => {
         return this.service.readAll({
           page,
           size,

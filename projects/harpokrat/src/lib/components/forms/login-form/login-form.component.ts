@@ -2,7 +2,6 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {TokenService} from "../../../services/token.service";
 import {Token} from "../../../models/domain/token";
-import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'hpk-login-form',
