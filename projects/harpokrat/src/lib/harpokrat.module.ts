@@ -21,7 +21,16 @@ import {FormComponent} from './components/forms/form/form.component';
     ReactiveFormsModule,
     RouterModule,
   ],
-  declarations: [LoginFormComponent, ErrorAlertComponent, RegisterFormComponent, ResourceTableComponent, SecretsTableComponent, PagerComponent, SecretFormComponent, FormComponent],
+  declarations: [
+    LoginFormComponent,
+    ErrorAlertComponent,
+    RegisterFormComponent,
+    ResourceTableComponent,
+    SecretsTableComponent,
+    PagerComponent,
+    SecretFormComponent,
+    FormComponent
+  ],
   exports: [
     LoginFormComponent,
     RegisterFormComponent,
@@ -36,9 +45,6 @@ export class HarpokratModule {
     auth: {
       loginRouterPath: string
     }): ModuleWithProviders<HarpokratModule> {
-    if (serverUrl.endsWith('/')) {
-      serverUrl = serverUrl.substring(0, serverUrl.length - 1);
-    }
     return {
       ngModule: HarpokratModule,
       providers: [{
