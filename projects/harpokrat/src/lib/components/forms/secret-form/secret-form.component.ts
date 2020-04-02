@@ -1,10 +1,9 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Secret} from "../../../models/domain/secret";
 import {SecretService} from "../../../services/secret.service";
 import {AuthService} from "../../../services/auth.service";
 import {Relationship} from "../../../models/relationship";
-import {HclwService} from "@harpokrat/hcl";
+import {HclwService, Secret} from "@harpokrat/hcl";
 
 @Component({
   selector: 'hpk-secret-form',
@@ -31,19 +30,27 @@ export class SecretFormComponent implements OnInit {
 
   ngOnInit() {
     this.secretForm = this.$formBuilder.group({
-      content: ['', Validators.required],
+      name: ['', Validators.required],
+      login: ['', Validators.required],
+      password: ['', Validators.required],
+      domain: ['', Validators.required],
     });
   }
 
   onCreate() {
     this.loading = true;
-    const {content} = this.secretForm.controls;
+    const {name, password, login, domain} = this.secretForm.controls;
+    const s = new Secret(this.$hclwService);
+    s.name = name;
+    s.login = login;
+    s.password = password;
+    s.domain = domain;
     this.$secretService.create({
-      content: content.value,
+      content: s.content,
     }, {'owner': Relationship.of(this.$authService.currentUser)}).subscribe(
       (resource) => {
         this.loading = false;
-        this.create.emit(resource.attributes)
+        this.create.emit(new Secret(this.$hclwService, resource.attributes.content))
       },
       () => {
         this.error = 'An error occurred';

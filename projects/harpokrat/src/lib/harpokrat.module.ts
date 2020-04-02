@@ -12,13 +12,11 @@ import {SecretsTableComponent} from './components/tables/secrets-table/secrets-t
 import {PagerComponent} from './components/tables/pager/pager.component';
 import {SecretFormComponent} from './components/forms/secret-form/secret-form.component';
 import {FormComponent} from './components/forms/form/form.component';
-import {HclwModule} from "@harpokrat/hcl";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    HclwModule,
     HttpClientModule,
     ReactiveFormsModule,
     RouterModule,
@@ -37,7 +35,7 @@ export class HarpokratModule {
     serverUrl,
     auth: {
       loginRouterPath: string
-    }): ModuleWithProviders {
+    }): ModuleWithProviders<HarpokratModule> {
     if (serverUrl.endsWith('/')) {
       serverUrl = serverUrl.substring(0, serverUrl.length - 1);
     }
