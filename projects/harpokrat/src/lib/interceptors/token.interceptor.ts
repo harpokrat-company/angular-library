@@ -25,6 +25,7 @@ export class TokenInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(tap(() => {
     }, async (err: HttpErrorResponse) => {
       if (err.status === 401) {
+        this.authService.token = null;
         await this.router.navigate([this.loginRouterPath]);
       }
     }));

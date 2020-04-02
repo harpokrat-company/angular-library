@@ -4,6 +4,7 @@ import {Secret} from "../../../models/domain/secret";
 import {SecretService} from "../../../services/secret.service";
 import {AuthService} from "../../../services/auth.service";
 import {Relationship} from "../../../models/relationship";
+import {HclwService} from "@harpokrat/hcl";
 
 @Component({
   selector: 'hpk-secret-form',
@@ -18,13 +19,13 @@ export class SecretFormComponent implements OnInit {
 
   loading: boolean;
 
-  @Output() readonly create: EventEmitter<Secret>;
-
+  @Output() readonly create = new EventEmitter<Secret>();
 
   constructor(
     private readonly $formBuilder: FormBuilder,
     private readonly $secretService: SecretService,
     private readonly $authService: AuthService,
+    private readonly $hclwService: HclwService,
   ) {
   }
 

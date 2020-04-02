@@ -5,18 +5,20 @@ import {RouterModule} from '@angular/router';
 import {LoginFormComponent} from './components/forms/login-form/login-form.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
-import { ErrorAlertComponent } from './components/alerts/error-alert/error-alert.component';
-import { RegisterFormComponent } from './components/forms/register-form/register-form.component';
-import { ResourceTableComponent } from './components/tables/resource-table/resource-table.component';
-import { SecretsTableComponent } from './components/tables/secrets-table/secrets-table.component';
-import { PagerComponent } from './components/tables/pager/pager.component';
-import { SecretFormComponent } from './components/forms/secret-form/secret-form.component';
-import { FormComponent } from './components/forms/form/form.component';
+import {ErrorAlertComponent} from './components/alerts/error-alert/error-alert.component';
+import {RegisterFormComponent} from './components/forms/register-form/register-form.component';
+import {ResourceTableComponent} from './components/tables/resource-table/resource-table.component';
+import {SecretsTableComponent} from './components/tables/secrets-table/secrets-table.component';
+import {PagerComponent} from './components/tables/pager/pager.component';
+import {SecretFormComponent} from './components/forms/secret-form/secret-form.component';
+import {FormComponent} from './components/forms/form/form.component';
+import {HclwModule} from "@harpokrat/hcl";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    HclwModule,
     HttpClientModule,
     ReactiveFormsModule,
     RouterModule,
