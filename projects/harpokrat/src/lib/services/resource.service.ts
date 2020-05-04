@@ -70,7 +70,7 @@ export abstract class ResourceService<T = any> {
     return this.apiService.delete(this.buildUrl(resourceId));
   }
 
-  asDatasource(): Datasource<T> {
+  asDatasource(): ResourceDatasource<T> {
     return new ResourceDatasource<T>(this);
   }
 }

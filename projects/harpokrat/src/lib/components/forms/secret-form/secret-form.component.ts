@@ -4,6 +4,7 @@ import {SecretService} from "../../../services/secret.service";
 import {AuthService} from "../../../services/auth.service";
 import {Relationship} from "../../../models/relationship";
 import {HclwService, Secret} from "@harpokrat/hcl";
+import {flatMap} from "rxjs/operators";
 
 @Component({
   selector: 'hpk-secret-form',
@@ -40,23 +41,26 @@ export class SecretFormComponent implements OnInit {
   onCreate() {
     this.loading = true;
     const {name, password, login, domain} = this.secretForm.controls;
-    const s = new Secret(this.$hclwService);
-    s.name = name;
-    s.login = login;
-    s.password = password;
-    s.domain = domain;
-    this.$secretService.create({
-      content: s.content,
-    }, {'owner': Relationship.of(this.$authService.currentUser)}).subscribe(
-      (resource) => {
-        this.loading = false;
-        this.create.emit(new Secret(this.$hclwService, resource.attributes.content))
-      },
-      () => {
-        this.error = 'An error occurred';
-        this.loading = false;
-      },
-    )
+    this.$hclwService.createSecret().subscribe((s) => {
+      s.name = name;
+      s.login = login;
+      s.password = password;
+      s.domain = domain;
+      this.$secretService.create({
+        content: s.getContent(this.$authService.key),
+      }, {'owner': Relationship.of(this.$authService.currentUser)}).pipe(
+        flatMap((resource) => this.$hclwService.createSecret(this.$authService.key, resource.attributes.content)),
+      ).subscribe(
+        (resource) => {
+          this.loading = false;
+          this.create.emit(resource);
+        },
+        () => {
+          this.error = 'An error occurred';
+          this.loading = false;
+        },
+      )
+    });
   }
 
 }

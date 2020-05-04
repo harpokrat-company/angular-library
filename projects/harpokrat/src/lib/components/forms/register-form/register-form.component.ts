@@ -2,6 +2,8 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../../services/user.service";
 import {User} from "../../../models/domain/user";
+import {HclwService} from "@harpokrat/hcl";
+import {flatMap} from "rxjs/operators";
 
 @Component({
   selector: 'hpk-register-form',
@@ -21,6 +23,7 @@ export class RegisterFormComponent implements OnInit {
   constructor(
     private readonly $formBuilder: FormBuilder,
     private readonly $userService: UserService,
+    private readonly $hclwService: HclwService,
   ) {
     this.register = new EventEmitter<User>();
   }
@@ -44,17 +47,20 @@ export class RegisterFormComponent implements OnInit {
   onRegister() {
     this.loading = true;
     const {firstName, lastName, email, password} = this.registerForm.controls;
-    this.$userService.create({
-      firstName: firstName.value,
-      lastName: lastName.value,
-      email: email.value,
-      password: password.value,
-    }).subscribe(
+    this.$hclwService.getDerivedKey(password.value).pipe(
+      flatMap((derived) => this.$userService.create({
+        firstName: firstName.value,
+        lastName: lastName.value,
+        email: email.value,
+        password: derived,
+      })),
+    ).subscribe(
       (resource) => {
         this.loading = false;
         this.register.emit(resource.attributes)
       },
-      () => {
+      (err) => {
+        console.error(err);
         this.error = 'An error occurred';
         this.loading = false;
       },

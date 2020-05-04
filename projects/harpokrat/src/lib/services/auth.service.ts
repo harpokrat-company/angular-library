@@ -12,6 +12,10 @@ const LOCAL_STORAGE_TOKEN_KEY = 'token';
 })
 export class AuthService {
 
+  private $key: string;
+
+  private readonly $tokenSubject: BehaviorSubject<Resource<Token>>;
+
   get tokenObservable(): Observable<Resource<Token>> {
     return this.$tokenSubject.asObservable();
   }
@@ -26,8 +30,6 @@ export class AuthService {
     return this.token.relationships['user'].data;
   }
 
-  private readonly $tokenSubject: BehaviorSubject<Resource<Token>>;
-
   get token(): Resource<Token> {
     return this.$tokenSubject.value;
   }
@@ -35,6 +37,14 @@ export class AuthService {
   set token(value: Resource<Token>) {
     this.$tokenSubject.next(value);
     localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, JSON.stringify(value));
+  }
+
+  get key(): string {
+    return this.$key;
+  }
+
+  set key(val: string) {
+    this.$key = val;
   }
 
   constructor() {

@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {TokenService} from "../../../services/token.service";
 import {Token} from "../../../models/domain/token";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'hpk-login-form',
@@ -21,6 +22,7 @@ export class LoginFormComponent implements OnInit {
   constructor(
     private readonly $formBuilder: FormBuilder,
     private readonly $tokenService: TokenService,
+    private readonly $authService: AuthService
   ) {
     this.login = new EventEmitter<Token>();
   }
@@ -41,9 +43,8 @@ export class LoginFormComponent implements OnInit {
       (resource) => {
         this.loading = false;
         this.login.emit(resource.attributes);
-      },
-      (err) => {
-        console.error(err);
+        this.$authService.key = password.value;
+      }, () => {
         this.error = 'Invalid email/password';
         this.loading = false;
       },

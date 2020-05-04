@@ -25,6 +25,10 @@
       ],
       "harpokrat/*": [
         "dist/harpokrat/*"
+      ],
+      "test": [
+        "dist/test/test",
+        "dist/test"
       ]
     }
   }
