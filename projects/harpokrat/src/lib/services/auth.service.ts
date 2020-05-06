@@ -6,6 +6,8 @@ import {Resource} from "../models/resource";
 import {ResourceLinkage} from "../models/relationship";
 
 const LOCAL_STORAGE_TOKEN_KEY = 'token';
+const LOCAL_STORAGE_KEY = 'key';
+
 
 @Injectable({
   providedIn: 'root'
@@ -45,10 +47,12 @@ export class AuthService {
 
   set key(val: string) {
     this.$key = val;
+    localStorage.setItem(LOCAL_STORAGE_KEY, val);
   }
 
   constructor() {
     this.$tokenSubject = new BehaviorSubject<Resource<Token>>(null);
+    this.$key = localStorage.getItem(LOCAL_STORAGE_KEY);
     const existing = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
     if (existing) {
       this.$tokenSubject.next(JSON.parse(existing));

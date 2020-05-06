@@ -1,15 +1,19 @@
-import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
+import {Inject, Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AuthService} from "../services/auth.service";
-import {map, switchMap} from "rxjs/operators";
+import {switchMap} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private router: Router, private authService: AuthService) {
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    @Inject('loginRouterPath') private readonly loginRouterPath: string,
+  ) {
   }
 
   canActivate(
@@ -19,11 +23,11 @@ export class AuthGuard implements CanActivate {
     return this.authService.authenticatedObservable.pipe(
       switchMap(async (isLoggedIn) => {
         if (!isLoggedIn) {
-          await this.router.navigate(['/login']);
+          await this.router.navigate([this.loginRouterPath], {queryParams: {'redirect': state.url}});
           return false;
         }
         return true;
-      })
+      }),
     );
   }
 }

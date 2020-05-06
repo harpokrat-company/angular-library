@@ -38,13 +38,15 @@ export class LoginFormComponent implements OnInit {
 
   onLogin() {
     this.loading = true;
+    this.error = null;
     const {email, password} = this.loginForm.controls;
     this.$tokenService.login(email.value, password.value).subscribe(
       (resource) => {
         this.loading = false;
         this.login.emit(resource.attributes);
         this.$authService.key = password.value;
-      }, () => {
+      }, (err) => {
+        console.error(err);
         this.error = 'Invalid email/password';
         this.loading = false;
       },

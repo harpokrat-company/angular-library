@@ -1,0 +1,12 @@
+<ng-container *ngIf="secureAction">
+  <ng-container [ngSwitch]="secureAction.attributes.actionType">
+    <ng-container *ngSwitchCase="'validate_email_address'">
+      <hpk-validate-email-address-form (validated)="redirect()"
+                                       [token]="token"
+                                       [secureAction]="secureAction"></hpk-validate-email-address-form>
+    </ng-container>
+    <div *ngSwitchDefault>
+      <h5 class="text-danger">An Error Occurred</h5>
+    </div>
+  </ng-container>
+</ng-container>

@@ -28,7 +28,7 @@ export class Response<T = any, DataT extends PrimaryData<T> = PrimaryData<T>> {
     this.included = included;
   }
 
-  static of<T = any, DataT extends PrimaryData<T> = PrimaryData<T>>(data: DataT) {
-    return new Response<T, DataT>(data);
+  static of<T = any, DataT extends PrimaryData<T> = PrimaryData<T>>(data: DataT, meta?: Meta) {
+    return new Response<T, DataT>(data, undefined, meta);
   }
 }

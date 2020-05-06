@@ -5,8 +5,7 @@
     "ng": "ng",
     "example": "ng serve example",
     "build": "ng build harpokrat",
-    "copy-dist": "rm -rf ./dist && cp -r ./projects/harpokrat/dist ./dist",
-    "package": "npm run build && npm run copy-dist",
+    "package": "npm run build -- --prod",
     "test": "ng test harpokrat",
     "lint": "ng lint harpokrat",
     "e2e": "ng e2e"
@@ -21,7 +20,7 @@
     "@angular/platform-browser": "~9.1.0",
     "@angular/platform-browser-dynamic": "~9.1.0",
     "@angular/router": "~9.1.0",
-    "@harpokrat/hcl": "^0.0.14",
+    "@harpokrat/hcl": "^0.0.17",
     "bootstrap": "^4.3.1",
     "core-js": "^2.5.4",
     "rxjs": "~6.5.4",

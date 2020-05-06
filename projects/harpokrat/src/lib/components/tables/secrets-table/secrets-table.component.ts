@@ -4,7 +4,9 @@ import {Datasource} from "../../../datasource/datasource";
 import {SecretService} from "../../../services/secret.service";
 import {HclwService, Secret} from "@harpokrat/hcl";
 import {AuthService} from "../../../services/auth.service";
-import {combineLatest, switchMap} from "rxjs/operators";
+import {switchMap, tap} from "rxjs/operators";
+import {combineLatest} from "rxjs";
+import {ResourceIdentifier} from "../../../models/resource-identifier";
 
 @Component({
   selector: 'hpk-secrets-table',
@@ -18,7 +20,15 @@ export class SecretsTableComponent implements OnInit {
       {
         name: 'Name',
         key: 'name',
-      }
+      },
+      {
+        name: 'Login',
+        key: 'login',
+      },
+      {
+        name: 'Domain',
+        key: 'domain',
+      },
     ]
   };
 
@@ -29,9 +39,11 @@ export class SecretsTableComponent implements OnInit {
     private readonly $authService: AuthService,
     private readonly $hclwService: HclwService,
   ) {
-    this.datasource = $secretService.asDatasource().pipe((obs) => obs.pipe(
+    this.datasource = $secretService.asDatasource({
+      'owner.id': (this.$authService.currentUser as ResourceIdentifier).id,
+    }).pipe((obs) => obs.pipe(
       switchMap((secrets) => combineLatest(
-        ...secrets.map((s) => $hclwService.createSecret($authService.key, s.attributes.content)),
+        secrets.map((s) => $hclwService.createSecret($authService.key, s.attributes.content)),
       )),
     ));
   }

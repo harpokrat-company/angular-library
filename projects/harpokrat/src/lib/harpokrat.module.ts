@@ -12,6 +12,12 @@ import {SecretsTableComponent} from './components/tables/secrets-table/secrets-t
 import {PagerComponent} from './components/tables/pager/pager.component';
 import {SecretFormComponent} from './components/forms/secret-form/secret-form.component';
 import {FormComponent} from './components/forms/form/form.component';
+import {SecretViewerComponent} from './components/secret-viewer/secret-viewer.component';
+import {SecretComponent} from './components/secret/secret.component';
+import {SecretDeleteFormComponent} from './components/forms/secret-delete-form/secret-delete-form.component';
+import {DeleteFormComponent} from './components/forms/delete-form/delete-form.component';
+import {SecureActionComponent} from './components/secure-action/secure-action.component';
+import {ValidateEmailAddressFormComponent} from './components/forms/validate-email-address-form/validate-email-address-form.component';
 
 @NgModule({
   imports: [
@@ -29,13 +35,22 @@ import {FormComponent} from './components/forms/form/form.component';
     SecretsTableComponent,
     PagerComponent,
     SecretFormComponent,
-    FormComponent
+    FormComponent,
+    SecretViewerComponent,
+    SecretComponent,
+    SecretDeleteFormComponent,
+    DeleteFormComponent,
+    SecureActionComponent,
+    ValidateEmailAddressFormComponent
   ],
   exports: [
     LoginFormComponent,
     RegisterFormComponent,
     SecretsTableComponent,
-    SecretFormComponent
+    SecretFormComponent,
+    SecretViewerComponent,
+    SecretComponent,
+    SecureActionComponent
   ]
 })
 export class HarpokratModule {

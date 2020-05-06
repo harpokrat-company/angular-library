@@ -2,8 +2,10 @@ import {ApiService} from './api.service';
 import {Observable} from 'rxjs';
 import {Resource} from '../models/resource';
 import {ResourceDatasource} from "../datasource/resource-datasource";
-import {Datasource} from "../datasource/datasource";
 import {Relationships} from "../models/relationships";
+import {Meta} from "../models/meta";
+
+export type Filters = { [key: string]: any };
 
 export interface PaginationOptions {
 
@@ -14,6 +16,8 @@ export interface PaginationOptions {
   sort?: string;
 
   sortDescending?: boolean;
+
+  filters?: Filters;
 }
 
 export abstract class ResourceService<T = any> {
@@ -46,31 +50,34 @@ export abstract class ResourceService<T = any> {
     return this.apiService.get<T>(this.buildUrl(resourceId));
   }
 
-  readAll({page = 0, size = 20, sort = undefined, sortDescending = false}: PaginationOptions = {}): Observable<Resource<T>[]> {
+  readAll({page = 0, size = 20, sort = undefined, sortDescending = false, filters = []}: PaginationOptions = {}): Observable<Resource<T>[]> {
     const params = {
       'page[number]': (page + 1).toFixed(),
       'page[size]': size.toFixed(),
     };
+    for (const key of Object.keys(filters)) {
+      params[`filter[${key}]`] = filters[key];
+    }
     if (sort) {
       params['sort'] = sortDescending ? `-${sort}` : sort;
     }
-    return this.apiService.getMany<T>(this.uri, params);
+    return this.apiService.getMany<T>(this.uri, {params});
   }
 
-  create(attributes?: T, relationships?: Relationships): Observable<Resource<T>> {
+  create(attributes?: T, relationships?: Relationships, meta?: Meta): Observable<Resource<T>> {
     const resource = Resource.of(attributes, this.resourceType, relationships);
-    return this.apiService.post<T>(this.uri, resource);
+    return this.apiService.post<T>(this.uri, resource, {meta});
   }
 
-  update(resourceId: string): Observable<Resource<T>> {
-    return this.apiService.patch<T>(this.buildUrl(resourceId));
+  update(resourceId: string, resource: Resource<Partial<T>>, meta?: Meta): Observable<Resource<T>> {
+    return this.apiService.patch<T>(this.buildUrl(resourceId), resource, {meta});
   }
 
-  delete(resourceId: string): Observable<Resource<null>> {
-    return this.apiService.delete(this.buildUrl(resourceId));
+  delete(resourceId: string, meta?: Meta): Observable<Resource<null>> {
+    return this.apiService.delete(this.buildUrl(resourceId), {meta});
   }
 
-  asDatasource(): ResourceDatasource<T> {
-    return new ResourceDatasource<T>(this);
+  asDatasource(filters: Filters): ResourceDatasource<T> {
+    return new ResourceDatasource<T>(this, filters);
   }
 }

@@ -23,8 +23,8 @@ export class TokenService extends ResourceService {
 
   login(email: string, password: string): Observable<Resource<Token>> {
     return this.$hclwService.getBasicAuth(email, password).pipe(
-      flatMap((basic) => this.api.post<Token>(this.baseUri, null, null, {
-        'Authorization': basic,
+      flatMap((basic) => this.api.post<Token>(this.baseUri, null, {
+        headers: {'Authorization': basic,},
       }).pipe(
         tap(token => this.authService.token = token),
         shareReplay(1)

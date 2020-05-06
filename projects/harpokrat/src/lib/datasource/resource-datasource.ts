@@ -1,9 +1,8 @@
 import {Datasource} from "./datasource";
 import {BehaviorSubject, combineLatest, Observable} from "rxjs";
-import {ResourceService} from "../services/resource.service";
-import {debounceTime, flatMap, map, shareReplay, switchMap} from "rxjs/operators";
+import {Filters, ResourceService} from "../services/resource.service";
+import {debounceTime, map, shareReplay, switchMap} from "rxjs/operators";
 import {Resource} from "../models/resource";
-import {Data} from "@angular/router";
 import {DerivedDatasource} from "./derived-datasource";
 
 export class ResourceDatasource<T = any> implements Datasource {
@@ -60,6 +59,7 @@ export class ResourceDatasource<T = any> implements Datasource {
 
   constructor(
     private readonly service: ResourceService<T>,
+    private readonly filters: Filters,
   ) {
     this.$pageSubject = new BehaviorSubject<number>(0);
     this.$sizeSubject = new BehaviorSubject<number>(10);
@@ -80,6 +80,7 @@ export class ResourceDatasource<T = any> implements Datasource {
           size,
           sort,
           sortDescending,
+          filters,
         })
       }),
       shareReplay({refCount: true, bufferSize: 1}),

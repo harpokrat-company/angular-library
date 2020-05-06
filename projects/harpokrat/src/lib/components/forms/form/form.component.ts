@@ -8,7 +8,11 @@ import {FormGroup} from "@angular/forms";
 })
 export class FormComponent implements OnInit {
 
+  @Input() buttonClass: string = 'btn-primary';
+
   @Input() error: string;
+
+  @Output() errorChange = new EventEmitter<string>();
 
   @Input() loading: boolean;
 
@@ -16,10 +20,9 @@ export class FormComponent implements OnInit {
 
   @Input() submitTitle: string = 'Submit';
 
-  @Output() readonly formSubmit: EventEmitter<void>;
+  @Output() readonly formSubmit = new EventEmitter<void>();
 
   constructor() {
-    this.formSubmit = new EventEmitter<void>();
   }
 
   ngOnInit() {
@@ -29,6 +32,11 @@ export class FormComponent implements OnInit {
     if (!this.loading && this.formGroup.valid) {
       this.formSubmit.emit();
     }
+  }
+
+  dismissError() {
+    this.error = null;
+    this.errorChange.emit(this.error);
   }
 
 }

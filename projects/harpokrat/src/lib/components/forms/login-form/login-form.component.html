@@ -1,4 +1,4 @@
-<hpk-form [formGroup]="loginForm" [loading]="loading" [error]="error" submitTitle="Log in" (formSubmit)="onLogin()">
+<hpk-form [formGroup]="loginForm" [loading]="loading" [(error)]="error" submitTitle="Log in" (formSubmit)="onLogin()">
   <div class="form-group">
     <label for="login-form--input--email">Email</label>
     <input id="login-form--input--email" type="text" formControlName="email" placeholder="Email"

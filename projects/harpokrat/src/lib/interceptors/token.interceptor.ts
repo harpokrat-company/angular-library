@@ -8,9 +8,10 @@ import {tap} from 'rxjs/operators';
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-  constructor(@Inject('loginRouterPath') private readonly loginRouterPath: string,
-              private readonly authService: AuthService,
-              private readonly router: Router) {
+  constructor(
+    @Inject('loginRouterPath') private readonly loginRouterPath: string,
+    private readonly authService: AuthService,
+    private readonly router: Router) {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -26,7 +27,7 @@ export class TokenInterceptor implements HttpInterceptor {
     }, async (err: HttpErrorResponse) => {
       if (err.status === 401) {
         this.authService.token = null;
-        await this.router.navigate([this.loginRouterPath]);
+        await this.router.navigate([this.loginRouterPath], {queryParams: {'redirect': this.router.url}});
       }
     }));
   }
