@@ -3,6 +3,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {SecureActionService} from "../../../services/secure-action.service";
 import {SecureAction} from "../../../models/domain/secure-action";
 import {Resource} from "../../../models/resource";
+import {HclwService} from "@harpokrat/hcl";
+import {switchMap} from "rxjs/operators";
 
 @Component({
   selector: 'hpk-reset-password-form',
@@ -26,6 +28,7 @@ export class ResetPasswordFormComponent implements OnInit {
   constructor(
     private readonly $fb: FormBuilder,
     private readonly $secureActionService: SecureActionService,
+    private readonly $hclwService: HclwService,
   ) {
   }
 
@@ -38,14 +41,16 @@ export class ResetPasswordFormComponent implements OnInit {
   onSubmit() {
     this.loading = true;
     const password = this.resetForm.controls.password.value;
-    this.$secureActionService.update(this.secureAction.id, {
-      ...this.secureAction,
-      attributes: {
-        payload: password
-      }
-    }, {
-      token: this.token,
-    }).subscribe(
+    this.$hclwService.getDerivedKey(password.value).pipe(
+      switchMap(() => this.$secureActionService.update(this.secureAction.id, {
+        ...this.secureAction,
+        attributes: {
+          payload: password
+        }
+      }, {
+        token: this.token,
+      })),
+    ).subscribe(
       () => {
         this.loading = false;
         this.reset.next();
