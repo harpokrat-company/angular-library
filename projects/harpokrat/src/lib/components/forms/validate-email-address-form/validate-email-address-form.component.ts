@@ -26,11 +26,10 @@ export class ValidateEmailAddressFormComponent implements OnInit {
       ...this.secureAction,
       attributes: {
         validated: true,
-      },
-      meta: {
-        token: this.token,
       }
-    },).subscribe(
+    }, {
+      token: this.token,
+    }).subscribe(
       (res) => this.validated.next(res),
     );
   }

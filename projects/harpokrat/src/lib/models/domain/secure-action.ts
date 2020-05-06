@@ -4,4 +4,6 @@ export class SecureAction {
 
   validated?: boolean;
 
+  payload?: string;
+
 }

@@ -30,11 +30,11 @@ export class ApiService {
     meta?: Meta
   }): Observable<DataT> {
     if (options.body != null) {
-      options.body = Response.of(options.body);
+      options.body = Response.of(options.body, options.meta);
     }
     return this.httpClient.request<Response<T, DataT>>(method, url, options).pipe(
       map(res => res.data),
-      shareReplay(1)
+      shareReplay({refCount: true, bufferSize: 1}),
     );
   }
 

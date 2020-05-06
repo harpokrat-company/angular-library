@@ -7,6 +7,9 @@
     <h3>Login</h3>
     <hpk-login-form></hpk-login-form>
   </div>
+  <div class="my-3">
+    <hpk-request-password-form></hpk-request-password-form>
+  </div>
   <hpk-secure-action [secureAction]="sampleSecureAction" token="aled"></hpk-secure-action>
   <ng-container *ngIf="authenticatedObservable | async">
     <div class="my-3">

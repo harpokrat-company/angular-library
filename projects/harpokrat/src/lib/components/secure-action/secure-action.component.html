@@ -5,6 +5,11 @@
                                        [token]="token"
                                        [secureAction]="secureAction"></hpk-validate-email-address-form>
     </ng-container>
+    <ng-container *ngSwitchCase="'reset_password'">
+      <hpk-reset-password-form (reset)="redirect()"
+                               [secureAction]="secureAction"
+                               [token]="token"></hpk-reset-password-form>
+    </ng-container>
     <div *ngSwitchDefault>
       <h5 class="text-danger">An Error Occurred</h5>
     </div>

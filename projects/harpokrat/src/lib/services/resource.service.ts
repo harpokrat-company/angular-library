@@ -30,9 +30,11 @@ export abstract class ResourceService<T = any> {
     return this.apiService;
   }
 
-  protected constructor(private apiService: ApiService,
-                        private uri: string,
-                        private resourceType) {
+  protected constructor(
+    private apiService: ApiService,
+    private uri: string,
+    private resourceType,
+  ) {
   }
 
   buildUrl(path: string): string {

@@ -29,7 +29,7 @@ export class AppComponent {
       type: 'secure_action',
       id: '',
       attributes: {
-        actionType: 'validate_email_address',
+        actionType: 'reset_password',
       },
     };
     this.sampleSecret = $hclwService.createSecret().pipe(

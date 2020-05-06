@@ -18,6 +18,8 @@ import {SecretDeleteFormComponent} from './components/forms/secret-delete-form/s
 import {DeleteFormComponent} from './components/forms/delete-form/delete-form.component';
 import {SecureActionComponent} from './components/secure-action/secure-action.component';
 import {ValidateEmailAddressFormComponent} from './components/forms/validate-email-address-form/validate-email-address-form.component';
+import { RequestPasswordFormComponent } from './components/forms/request-password-form/request-password-form.component';
+import { ResetPasswordFormComponent } from './components/forms/reset-password-form/reset-password-form.component';
 
 @NgModule({
   imports: [
@@ -41,7 +43,9 @@ import {ValidateEmailAddressFormComponent} from './components/forms/validate-ema
     SecretDeleteFormComponent,
     DeleteFormComponent,
     SecureActionComponent,
-    ValidateEmailAddressFormComponent
+    ValidateEmailAddressFormComponent,
+    RequestPasswordFormComponent,
+    ResetPasswordFormComponent
   ],
   exports: [
     LoginFormComponent,
@@ -50,7 +54,8 @@ import {ValidateEmailAddressFormComponent} from './components/forms/validate-ema
     SecretFormComponent,
     SecretViewerComponent,
     SecretComponent,
-    SecureActionComponent
+    SecureActionComponent,
+    RequestPasswordFormComponent
   ]
 })
 export class HarpokratModule {
