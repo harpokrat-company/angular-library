@@ -18,8 +18,10 @@ import {SecretDeleteFormComponent} from './components/forms/secret-delete-form/s
 import {DeleteFormComponent} from './components/forms/delete-form/delete-form.component';
 import {SecureActionComponent} from './components/secure-action/secure-action.component';
 import {ValidateEmailAddressFormComponent} from './components/forms/validate-email-address-form/validate-email-address-form.component';
-import { RequestPasswordFormComponent } from './components/forms/request-password-form/request-password-form.component';
-import { ResetPasswordFormComponent } from './components/forms/reset-password-form/reset-password-form.component';
+import {RequestPasswordFormComponent} from './components/forms/request-password-form/request-password-form.component';
+import {ResetPasswordFormComponent} from './components/forms/reset-password-form/reset-password-form.component';
+import {ProfileComponent} from './components/profile/profile.component';
+import {ProfileViewerComponent} from './components/profile-viewer/profile-viewer.component';
 
 @NgModule({
   imports: [
@@ -45,7 +47,9 @@ import { ResetPasswordFormComponent } from './components/forms/reset-password-fo
     SecureActionComponent,
     ValidateEmailAddressFormComponent,
     RequestPasswordFormComponent,
-    ResetPasswordFormComponent
+    ResetPasswordFormComponent,
+    ProfileComponent,
+    ProfileViewerComponent
   ],
   exports: [
     LoginFormComponent,
@@ -55,7 +59,8 @@ import { ResetPasswordFormComponent } from './components/forms/reset-password-fo
     SecretViewerComponent,
     SecretComponent,
     SecureActionComponent,
-    RequestPasswordFormComponent
+    RequestPasswordFormComponent,
+    ProfileComponent
   ]
 })
 export class HarpokratModule {

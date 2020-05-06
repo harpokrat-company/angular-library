@@ -1,0 +1,15 @@
+<ng-container *ngIf="userObservable | async as user; else loading">
+  <div *ngIf="edit; else details">
+    <h4>Edit Details</h4>
+    <hpk-register-form [user]="user" (userChange)="onRegister($event)"></hpk-register-form>
+  </div>
+  <ng-template #details>
+    <hpk-profile-viewer [user]="user.attributes"></hpk-profile-viewer>
+    <button class="btn btn-primary btn-sm mt-3 w-100" type="button" (click)="edit = true">Edit</button>
+  </ng-template>
+</ng-container>
+<ng-template #loading>
+  <div class="p-3 text-center">
+    <span class="spinner-border"></span>
+  </div>
+</ng-template>

@@ -42,10 +42,10 @@ export class ResetPasswordFormComponent implements OnInit {
     this.loading = true;
     const password = this.resetForm.controls.password.value;
     this.$hclwService.getDerivedKey(password.value).pipe(
-      switchMap(() => this.$secureActionService.update(this.secureAction.id, {
+      switchMap((key) => this.$secureActionService.update(this.secureAction.id, {
         ...this.secureAction,
         attributes: {
-          payload: password
+          payload: key
         }
       }, {
         token: this.token,

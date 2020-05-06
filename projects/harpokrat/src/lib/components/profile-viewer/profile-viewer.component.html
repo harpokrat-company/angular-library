@@ -1,0 +1,18 @@
+<div *ngIf="user" class="container-fluid">
+  <div  class="container-fluid">
+    <div class="mb-3">
+      <span>{{user.email}}</span>
+      <span class="ml-2 badge badge-danger" *ngIf="!user.emailValidated">Not Verified</span>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <span class="font-weight-bold mr-2">First Name:</span>
+        <span>{{user.firstName}}</span>
+      </div>
+      <div class="col-6">
+        <span class="font-weight-bold mr-2">Last Name:</span>
+        <span>{{user.lastName}}</span>
+      </div>
+    </div>
+  </div>
+</div>
