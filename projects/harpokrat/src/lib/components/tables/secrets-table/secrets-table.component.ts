@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ResourceTableConfiguration} from "../resource-table/resource-table.component";
 import {Datasource} from "../../../datasource/datasource";
 import {SecretService} from "../../../services/secret.service";
@@ -13,7 +13,7 @@ import {ResourceIdentifier} from "../../../models/resource-identifier";
   templateUrl: './secrets-table.component.html',
   styleUrls: ['./secrets-table.component.css']
 })
-export class SecretsTableComponent implements OnInit {
+export class SecretsTableComponent implements OnDestroy {
 
   readonly config: ResourceTableConfiguration = {
     columns: [
@@ -48,7 +48,8 @@ export class SecretsTableComponent implements OnInit {
     ));
   }
 
-  ngOnInit() {
+  ngOnDestroy(): void {
+    this.datasource.dispose();
   }
 
 }

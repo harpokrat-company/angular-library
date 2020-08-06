@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from "rxjs";
-import {map} from "rxjs/operators";
-import {Token} from "../models/domain/token";
-import {Resource} from "../models/resource";
-import {ResourceLinkage} from "../models/relationship";
+import {BehaviorSubject, Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {Token} from '../models/domain/token';
+import {Resource} from '../models/resource';
+import {ResourceLinkage} from '../models/relationship';
 
 const LOCAL_STORAGE_TOKEN_KEY = 'token';
 const LOCAL_STORAGE_KEY = 'key';
@@ -29,7 +29,7 @@ export class AuthService {
   }
 
   get currentUser(): ResourceLinkage {
-    return this.token.relationships['user'].data;
+    return this.token.relationships.user.data;
   }
 
   get token(): Resource<Token> {

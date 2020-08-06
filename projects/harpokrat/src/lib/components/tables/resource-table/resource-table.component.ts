@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Datasource} from "../../../datasource/datasource";
-import {combineLatest, Observable, ReplaySubject, Subject} from "rxjs";
-import {map, switchMap} from "rxjs/operators";
+import {Datasource} from '../../../datasource/datasource';
+import {combineLatest, Observable, ReplaySubject, Subject} from 'rxjs';
+import {map, switchMap} from 'rxjs/operators';
 
 export interface ResourceTableColumnConfiguration {
 
@@ -65,16 +65,16 @@ export class ResourceTableComponent implements OnInit {
                  ]) => {
         return (datasource.data as Observable<any[]>).pipe(map(d => ({
           showIndex,
-          datasource: datasource,
-          columns: columns,
-          rows: d.map(d => {
-            return columns.map(({name, key = name, selectValue = (v) => v,}) => {
-              return selectValue(d[key]);
+          datasource,
+          columns,
+          rows: d.map(data => {
+            return columns.map(({name, key = name, selectValue = (v) => v}) => {
+              return selectValue(data[key]);
             });
           }),
         })));
       }),
-    )
+    );
   }
 
   setSort(datasource: Datasource, property: string) {

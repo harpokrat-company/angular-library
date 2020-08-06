@@ -1,15 +1,16 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {UserService} from "../../../services/user.service";
-import {User} from "../../../models/domain/user";
-import {HclwService} from "@harpokrat/hcl";
-import {flatMap, switchMap, take} from "rxjs/operators";
-import {Resource} from "../../../models/resource";
-import {AuthService} from "../../../services/auth.service";
-import {SecretService} from "../../../services/secret.service";
-import {Secret} from "../../../models/domain/secret";
-import {ResourceIdentifier} from "../../../models/resource-identifier";
-import {combineLatest} from "rxjs";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UserService} from '../../../services/user.service';
+import {User} from '../../../models/domain/user';
+import {HclwService} from '@harpokrat/hcl';
+import {flatMap, switchMap, take} from 'rxjs/operators';
+import {Resource} from '../../../models/resource';
+import {AuthService} from '../../../services/auth.service';
+import {SecretService} from '../../../services/secret.service';
+import {Secret} from '../../../models/domain/secret';
+import {ResourceIdentifier} from '../../../models/resource-identifier';
+import {combineLatest} from 'rxjs';
+import {fromPromise} from 'rxjs/internal-compatibility';
 
 @Component({
   selector: 'hpk-register-form',
@@ -71,9 +72,9 @@ export class RegisterFormComponent implements OnInit {
           'owner.id': (this.$authService.currentUser as ResourceIdentifier).id,
         },
       }).pipe(
-        flatMap((secrets) => combineLatest(secrets.map((secret) => {
+        flatMap((se) => combineLatest(se.map((secret) => {
           console.log('secret', secret);
-          return this.$hclwService.createSecret(oldKey, secret.attributes.content).pipe(
+          return fromPromise(this.$hclwService.createSecret(oldKey, secret.attributes.content)).pipe(
             switchMap((s) => this.$secretsService.update(secret.id, {
               ...secret, attributes: {
                 content: s.getContent(newKey),
@@ -84,13 +85,13 @@ export class RegisterFormComponent implements OnInit {
         take(1),
       ).toPromise();
       page += 1;
-    } while (secrets && secrets.length > 0)
+    } while (secrets && secrets.length > 0);
   }
 
   onRegister() {
     this.loading = true;
     const {firstName, lastName, email, password} = this.registerForm.controls;
-    this.$hclwService.getDerivedKey(password.value).pipe(
+    fromPromise(this.$hclwService.getDerivedKey(password.value)).pipe(
       flatMap((derived) => {
         const attributes = {
           firstName: firstName.value,
@@ -101,7 +102,7 @@ export class RegisterFormComponent implements OnInit {
         if (this.user != null) {
           const oldKey = this.$authService.key;
           const newKey = password.value;
-          const obs = this.$userService.update(this.user.id, {...this.user, attributes: attributes});
+          const obs = this.$userService.update(this.user.id, {...this.user, attributes});
           if (oldKey != null && oldKey !== newKey) {
             return this.renewSecrets(oldKey, newKey).then(() => obs.toPromise()).then(() => this.$authService.key = newKey);
           }
@@ -114,13 +115,13 @@ export class RegisterFormComponent implements OnInit {
       (resource) => {
         this.loading = false;
         this.userChange.next(resource);
-        this.register.emit(resource.attributes)
+        this.register.emit(resource.attributes);
       },
       (err) => {
         console.error(err);
         this.error = 'An error occurred';
         this.loading = false;
       },
-    )
+    );
   }
 }

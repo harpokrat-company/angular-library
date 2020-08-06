@@ -2,7 +2,9 @@ export class User {
 
   email: string;
 
-  emailValidated?: boolean;
+  emailAddressValidated?: boolean;
+
+  roles?: string[];
 
   password?: string;
 

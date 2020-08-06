@@ -5,6 +5,7 @@ import {SecureAction} from "../../../models/domain/secure-action";
 import {Resource} from "../../../models/resource";
 import {HclwService} from "@harpokrat/hcl";
 import {switchMap} from "rxjs/operators";
+import {fromPromise} from 'rxjs/internal-compatibility';
 
 @Component({
   selector: 'hpk-reset-password-form',
@@ -41,7 +42,7 @@ export class ResetPasswordFormComponent implements OnInit {
   onSubmit() {
     this.loading = true;
     const password = this.resetForm.controls.password.value;
-    this.$hclwService.getDerivedKey(password.value).pipe(
+    fromPromise(this.$hclwService.getDerivedKey(password.value)).pipe(
       switchMap((key) => this.$secureActionService.update(this.secureAction.id, {
         ...this.secureAction,
         attributes: {

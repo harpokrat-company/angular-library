@@ -1,4 +1,4 @@
-import {Observable} from "rxjs";
+import {Observable} from 'rxjs';
 
 export interface Datasource<T = any> {
 
@@ -13,4 +13,6 @@ export interface Datasource<T = any> {
   sort: string;
 
   sortDescending: boolean;
+
+  dispose(): void;
 }

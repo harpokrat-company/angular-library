@@ -6,6 +6,7 @@ import {HclwService, Secret} from "@harpokrat/hcl";
 import {map, tap} from "rxjs/operators";
 import {Resource} from "../../../harpokrat/src/lib/models/resource";
 import {SecureAction} from "../../../harpokrat/src/lib/models/domain/secure-action";
+import {fromPromise} from 'rxjs/internal-compatibility';
 
 @Component({
   selector: 'app-root',
@@ -32,7 +33,7 @@ export class AppComponent {
         actionType: 'reset_password',
       },
     };
-    this.sampleSecret = $hclwService.createSecret().pipe(
+    this.sampleSecret = fromPromise($hclwService.createSecret()).pipe(
       map((s) => {
         s.name = 'A';
         s.login = 'B';

@@ -81,7 +81,7 @@ export class ResourceDatasource<T = any> implements Datasource {
           sort,
           sortDescending,
           filters,
-        })
+        });
       }),
       shareReplay({refCount: true, bufferSize: 1}),
     );

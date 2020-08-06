@@ -11,6 +11,8 @@ export class Resource<T = any> extends ResourceIdentifier {
 
   links?: Links;
 
+  meta?: Meta;
+
   constructor(type: string, id: string, meta?: Meta, attributes?: T, relationships?: Relationships, links?: Links) {
     super(type, id, meta);
     this.attributes = attributes;
@@ -18,7 +20,9 @@ export class Resource<T = any> extends ResourceIdentifier {
     this.links = links;
   }
 
-  static of<T = any>(attributes: T, resourceType: string = undefined, relationships?: Relationships): Resource<T> {
-    return new Resource<T>(resourceType, undefined, undefined, attributes, relationships);
+  static of<T = any>(attributes: T, resourceType?: string, relationships?: Relationships, meta?: Meta): Resource<T> {
+    const res = new Resource<T>(resourceType, undefined, undefined, attributes, relationships);
+    res.meta = meta;
+    return res;
   }
 }

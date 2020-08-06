@@ -3,8 +3,8 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {TokenInterceptor} from './interceptors/token.interceptor';
 import {RouterModule} from '@angular/router';
 import {LoginFormComponent} from './components/forms/login-form/login-form.component';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {CommonModule} from "@angular/common";
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {CommonModule} from '@angular/common';
 import {ErrorAlertComponent} from './components/alerts/error-alert/error-alert.component';
 import {RegisterFormComponent} from './components/forms/register-form/register-form.component';
 import {ResourceTableComponent} from './components/tables/resource-table/resource-table.component';
@@ -22,6 +22,7 @@ import {RequestPasswordFormComponent} from './components/forms/request-password-
 import {ResetPasswordFormComponent} from './components/forms/reset-password-form/reset-password-form.component';
 import {ProfileComponent} from './components/profile/profile.component';
 import {ProfileViewerComponent} from './components/profile-viewer/profile-viewer.component';
+import {HclwService} from '@harpokrat/hcl';
 
 @NgModule({
   imports: [
@@ -78,6 +79,9 @@ export class HarpokratModule {
       }, {
         provide: 'loginRouterPath',
         useValue: auth.loginRouterPath
+      }, {
+        provide: HclwService,
+        useClass: HclwService,
       }, {
         provide: HTTP_INTERCEPTORS,
         useClass: TokenInterceptor,

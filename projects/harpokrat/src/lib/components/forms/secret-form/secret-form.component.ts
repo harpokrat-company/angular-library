@@ -1,12 +1,13 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {SecretService} from "../../../services/secret.service";
-import {AuthService} from "../../../services/auth.service";
-import {Relationship} from "../../../models/relationship";
-import {HclwService, Secret} from "@harpokrat/hcl";
-import {flatMap} from "rxjs/operators";
-import {Resource} from "../../../models/resource";
-import {Observable} from "rxjs";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {SecretService} from '../../../services/secret.service';
+import {AuthService} from '../../../services/auth.service';
+import {Relationship} from '../../../models/relationship';
+import {HclwService, Secret} from '@harpokrat/hcl';
+import {flatMap} from 'rxjs/operators';
+import {Resource} from '../../../models/resource';
+import {Observable} from 'rxjs';
+import {fromPromise} from 'rxjs/internal-compatibility';
 
 @Component({
   selector: 'hpk-secret-form',
@@ -48,7 +49,7 @@ export class SecretFormComponent implements OnInit {
   onCreate() {
     this.loading = true;
     const {name, password, login, domain} = this.secretForm.controls;
-    this.$hclwService.createSecret().subscribe((s) => {
+    fromPromise(this.$hclwService.createSecret()).subscribe((s) => {
       s.name = name.value;
       s.login = login.value;
       s.password = password.value;
@@ -64,7 +65,7 @@ export class SecretFormComponent implements OnInit {
       } else {
         obs = this.$secretService.create({
           content: s.getContent(this.$authService.key),
-        }, {'owner': Relationship.of(this.$authService.currentUser)});
+        }, {owner: Relationship.of(this.$authService.currentUser)});
       }
       obs.pipe(
         flatMap((resource) => this.$hclwService.createSecret(this.$authService.key, resource.attributes.content)),

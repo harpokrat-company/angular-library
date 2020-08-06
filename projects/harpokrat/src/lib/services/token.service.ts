@@ -1,34 +1,33 @@
-import {Inject, Injectable} from '@angular/core';
-import {ApiService, RequestHeaders} from './api.service';
-import {ResourceService} from './resource.service';
-import {AuthService} from './auth.service';
+import {Injectable} from '@angular/core';
+import {ApiService} from './api.service';
 import {Observable} from 'rxjs';
 import {Resource} from '../models/resource';
 import {Token} from '../models/domain/token';
-import {flatMap, shareReplay, tap} from 'rxjs/operators';
-import {HclwService} from "@harpokrat/hcl";
+import {shareReplay, tap} from 'rxjs/operators';
+import {fromPromise} from 'rxjs/internal-compatibility';
+import {AuthService} from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TokenService extends ResourceService {
+export class TokenService {
 
-  constructor(apiService: ApiService,
-              @Inject('serverUrl') serverUrl: string,
-              private authService: AuthService,
-              private readonly $hclwService: HclwService,
+  constructor(
+    private readonly apiService: ApiService,
+    private readonly authService: AuthService,
   ) {
-    super(apiService, `${serverUrl}/json-web-tokens`, 'tokens');
   }
 
   login(email: string, password: string): Observable<Resource<Token>> {
-    return this.$hclwService.getBasicAuth(email, password).pipe(
-      flatMap((basic) => this.api.post<Token>(this.baseUri, null, {
-        headers: {'Authorization': basic,},
-      }).pipe(
-        tap(token => this.authService.token = token),
-        shareReplay(1)
-      )),
+    this.apiService.client.auth = {
+      email,
+      password,
+    };
+    return fromPromise(
+      this.apiService.client.jsonWebTokens.create(),
+    ).pipe(
+      tap(token => this.authService.token = token),
+      shareReplay(1),
     );
   }
 }

@@ -1,11 +1,15 @@
 import {ApiService} from './api.service';
 import {Observable} from 'rxjs';
 import {Resource} from '../models/resource';
-import {ResourceDatasource} from "../datasource/resource-datasource";
-import {Relationships} from "../models/relationships";
-import {Meta} from "../models/meta";
+import {ResourceDatasource} from '../datasource/resource-datasource';
+import {Relationships} from '../models/relationships';
+import {Meta} from '../models/meta';
+import {IResourceEndpoint} from '@harpokrat/client';
+import {fromPromise} from 'rxjs/internal-compatibility';
 
-export type Filters = { [key: string]: any };
+export interface Filters {
+  [key: string]: any;
+}
 
 export interface PaginationOptions {
 
@@ -34,6 +38,7 @@ export abstract class ResourceService<T = any> {
     private apiService: ApiService,
     private uri: string,
     private resourceType,
+    private readonly endpoint: IResourceEndpoint<T>,
   ) {
   }
 
@@ -49,34 +54,36 @@ export abstract class ResourceService<T = any> {
   }
 
   read(resourceId: string): Observable<Resource<T>> {
-    return this.apiService.get<T>(this.buildUrl(resourceId));
+    return fromPromise(this.endpoint.read(resourceId));
   }
 
-  readAll({page = 0, size = 20, sort = undefined, sortDescending = false, filters = []}: PaginationOptions = {}): Observable<Resource<T>[]> {
-    const params = {
-      'page[number]': (page + 1).toFixed(),
-      'page[size]': size.toFixed(),
-    };
-    for (const key of Object.keys(filters)) {
-      params[`filter[${key}]`] = filters[key];
-    }
-    if (sort) {
-      params['sort'] = sortDescending ? `-${sort}` : sort;
-    }
-    return this.apiService.getMany<T>(this.uri, {params});
+  readAll({
+            page = 0,
+            size = 20,
+            sort,
+            sortDescending = false,
+            filters = []
+          }: PaginationOptions = {}): Observable<Resource<T>[]> {
+    return fromPromise(this.endpoint.readMany({
+      page,
+      size,
+      sort,
+      sortDescending,
+      filters,
+    }));
   }
 
   create(attributes?: T, relationships?: Relationships, meta?: Meta): Observable<Resource<T>> {
-    const resource = Resource.of(attributes, this.resourceType, relationships);
-    return this.apiService.post<T>(this.uri, resource, {meta});
+    const resource = Resource.of(attributes, this.resourceType, relationships, meta);
+    return fromPromise(this.endpoint.create(resource));
   }
 
   update(resourceId: string, resource: Resource<Partial<T>>, meta?: Meta): Observable<Resource<T>> {
-    return this.apiService.patch<T>(this.buildUrl(resourceId), resource, {meta});
+    return fromPromise(this.endpoint.update(resourceId, resource, {meta}));
   }
 
-  delete(resourceId: string, meta?: Meta): Observable<Resource<null>> {
-    return this.apiService.delete(this.buildUrl(resourceId), {meta});
+  delete(resourceId: string, meta?: Meta): Observable<void> {
+    return fromPromise(this.endpoint.delete(resourceId, {meta}));
   }
 
   asDatasource(filters: Filters): ResourceDatasource<T> {

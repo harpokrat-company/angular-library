@@ -1,5 +1,5 @@
 {
-  "name": "@harpokrat/lib",
+  "name": "@harpokrat/ngx",
   "version": "0.0.7",
   "scripts": {
     "ng": "ng",
@@ -20,7 +20,8 @@
     "@angular/platform-browser": "~9.1.0",
     "@angular/platform-browser-dynamic": "~9.1.0",
     "@angular/router": "~9.1.0",
-    "@harpokrat/hcl": "^0.0.18",
+    "@harpokrat/hcl": "^0.0.26",
+    "@harpokrat/client": "^0.0.3",
     "bootstrap": "^4.3.1",
     "core-js": "^2.5.4",
     "rxjs": "~6.5.4",

@@ -1,5 +1,5 @@
-import {Datasource} from "./datasource";
-import {Observable} from "rxjs";
+import {Datasource} from './datasource';
+import {Observable} from 'rxjs';
 
 export class DerivedDatasource<T = any> implements Datasource<T> {
 
@@ -43,5 +43,9 @@ export class DerivedDatasource<T = any> implements Datasource<T> {
     private readonly $parent: Datasource<any>,
     readonly data: Observable<T[]>,
   ) {
+  }
+
+  dispose(): void {
+    this.$parent.dispose();
   }
 }
