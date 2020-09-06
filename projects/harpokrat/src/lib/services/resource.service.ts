@@ -1,10 +1,7 @@
 import {ApiService} from './api.service';
 import {Observable} from 'rxjs';
-import {Resource} from '../models/resource';
 import {ResourceDatasource} from '../datasource/resource-datasource';
-import {Relationships} from '../models/relationships';
-import {Meta} from '../models/meta';
-import {IResourceEndpoint} from '@harpokrat/client';
+import {IMeta, IRelationships, IResource, IResourceEndpoint} from '@harpokrat/client';
 import {fromPromise} from 'rxjs/internal-compatibility';
 
 export interface Filters {
@@ -26,34 +23,18 @@ export interface PaginationOptions {
 
 export abstract class ResourceService<T = any> {
 
-  get baseUri() {
-    return this.uri;
-  }
-
   get api(): ApiService {
     return this.apiService;
   }
 
   protected constructor(
     private apiService: ApiService,
-    private uri: string,
     private resourceType,
     private readonly endpoint: IResourceEndpoint<T>,
   ) {
   }
 
-  buildUrl(path: string): string {
-    let url = this.uri;
-    if (url.endsWith('/')) {
-      url = url.substring(0, url.length - 1);
-    }
-    if (path.startsWith('/')) {
-      path = path.substring(1);
-    }
-    return url + '/' + path;
-  }
-
-  read(resourceId: string): Observable<Resource<T>> {
+  read(resourceId: string): Observable<IResource<T>> {
     return fromPromise(this.endpoint.read(resourceId));
   }
 
@@ -63,7 +44,7 @@ export abstract class ResourceService<T = any> {
             sort,
             sortDescending = false,
             filters = []
-          }: PaginationOptions = {}): Observable<Resource<T>[]> {
+          }: PaginationOptions = {}): Observable<IResource<T>[]> {
     return fromPromise(this.endpoint.readMany({
       page,
       size,
@@ -73,16 +54,21 @@ export abstract class ResourceService<T = any> {
     }));
   }
 
-  create(attributes?: T, relationships?: Relationships, meta?: Meta): Observable<Resource<T>> {
-    const resource = Resource.of(attributes, this.resourceType, relationships, meta);
+  create(attributes?: T, relationships?: IRelationships, meta?: IMeta): Observable<IResource<T>> {
+    const resource: IResource<T> = {
+      attributes,
+      type: this.resourceType,
+      relationships,
+      meta,
+    };
     return fromPromise(this.endpoint.create(resource));
   }
 
-  update(resourceId: string, resource: Resource<Partial<T>>, meta?: Meta): Observable<Resource<T>> {
+  update(resourceId: string, resource: IResource<Partial<T>>, meta?: IMeta): Observable<IResource<T>> {
     return fromPromise(this.endpoint.update(resourceId, resource, {meta}));
   }
 
-  delete(resourceId: string, meta?: Meta): Observable<void> {
+  delete(resourceId: string, meta?: IMeta): Observable<void> {
     return fromPromise(this.endpoint.delete(resourceId, {meta}));
   }
 

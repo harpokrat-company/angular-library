@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormGroup} from "@angular/forms";
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'hpk-form',
@@ -8,7 +8,7 @@ import {FormGroup} from "@angular/forms";
 })
 export class FormComponent implements OnInit {
 
-  @Input() buttonClass: string = 'btn-primary';
+  @Input() buttonClass = 'btn-primary';
 
   @Input() error: string;
 

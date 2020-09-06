@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from './api.service';
 import {Observable} from 'rxjs';
-import {Resource} from '../models/resource';
-import {Token} from '../models/domain/token';
 import {shareReplay, tap} from 'rxjs/operators';
 import {fromPromise} from 'rxjs/internal-compatibility';
 import {AuthService} from './auth.service';
+import {ITokenResource} from '@harpokrat/client';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +17,7 @@ export class TokenService {
   ) {
   }
 
-  login(email: string, password: string): Observable<Resource<Token>> {
+  login(email: string, password: string): Observable<ITokenResource> {
     this.apiService.client.auth = {
       email,
       password,

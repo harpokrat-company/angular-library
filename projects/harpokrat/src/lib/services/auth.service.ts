@@ -1,9 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {Token} from '../models/domain/token';
-import {Resource} from '../models/resource';
-import {ResourceLinkage} from '../models/relationship';
+import {IResourceLinkage, ITokenResource} from '@harpokrat/client';
 
 const LOCAL_STORAGE_TOKEN_KEY = 'token';
 const LOCAL_STORAGE_KEY = 'key';
@@ -16,9 +14,9 @@ export class AuthService {
 
   private $key: string;
 
-  private readonly $tokenSubject: BehaviorSubject<Resource<Token>>;
+  private readonly $tokenSubject: BehaviorSubject<ITokenResource>;
 
-  get tokenObservable(): Observable<Resource<Token>> {
+  get tokenObservable(): Observable<ITokenResource> {
     return this.$tokenSubject.asObservable();
   }
 
@@ -28,15 +26,15 @@ export class AuthService {
     );
   }
 
-  get currentUser(): ResourceLinkage {
+  get currentUser(): IResourceLinkage {
     return this.token.relationships.user.data;
   }
 
-  get token(): Resource<Token> {
+  get token(): ITokenResource {
     return this.$tokenSubject.value;
   }
 
-  set token(value: Resource<Token>) {
+  set token(value: ITokenResource) {
     this.$tokenSubject.next(value);
     localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, JSON.stringify(value));
   }
@@ -51,7 +49,7 @@ export class AuthService {
   }
 
   constructor() {
-    this.$tokenSubject = new BehaviorSubject<Resource<Token>>(null);
+    this.$tokenSubject = new BehaviorSubject<ITokenResource>(null);
     this.$key = localStorage.getItem(LOCAL_STORAGE_KEY);
     const existing = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
     if (existing) {

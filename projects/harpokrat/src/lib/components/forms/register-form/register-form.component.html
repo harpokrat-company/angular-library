@@ -27,4 +27,12 @@
     <input id="register-form--input--password-confirmation" type="password"
            formControlName="passwordConfirmation" placeholder="Password Confirmation" class="form-control">
   </div>
+  <div class="form-group text-center">
+    <ng-container *ngIf="siteKeyObservable | async as siteKey; else captchaLoading">
+      <re-captcha formControlName="captcha" [siteKey]="siteKey" [disabled]="loading"></re-captcha>
+    </ng-container>
+    <ng-template #captchaLoading>
+      <span class="spinner-border"></span>
+    </ng-template>
+  </div>
 </hpk-form>

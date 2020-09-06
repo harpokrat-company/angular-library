@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {User} from "../../models/domain/user";
+import {IUser} from '@harpokrat/client';
 
 @Component({
   selector: 'hpk-profile-viewer',
@@ -8,7 +8,7 @@ import {User} from "../../models/domain/user";
 })
 export class ProfileViewerComponent implements OnInit {
 
-  @Input() user: User;
+  @Input() user: IUser;
 
   constructor() {
   }

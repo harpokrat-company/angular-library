@@ -1,12 +1,12 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ResourceTableConfiguration} from "../resource-table/resource-table.component";
-import {Datasource} from "../../../datasource/datasource";
-import {SecretService} from "../../../services/secret.service";
-import {HclwService, Secret} from "@harpokrat/hcl";
-import {AuthService} from "../../../services/auth.service";
-import {switchMap, tap} from "rxjs/operators";
-import {combineLatest} from "rxjs";
-import {ResourceIdentifier} from "../../../models/resource-identifier";
+import {Component, OnDestroy} from '@angular/core';
+import {ResourceTableConfiguration} from '../resource-table/resource-table.component';
+import {Datasource} from '../../../datasource/datasource';
+import {SecretService} from '../../../services/secret.service';
+import {HclwService, Secret} from '@harpokrat/hcl';
+import {AuthService} from '../../../services/auth.service';
+import {switchMap} from 'rxjs/operators';
+import {combineLatest} from 'rxjs';
+import {IResourceIdentifier} from '@harpokrat/client';
 
 @Component({
   selector: 'hpk-secrets-table',
@@ -40,7 +40,7 @@ export class SecretsTableComponent implements OnDestroy {
     private readonly $hclwService: HclwService,
   ) {
     this.datasource = $secretService.asDatasource({
-      'owner.id': (this.$authService.currentUser as ResourceIdentifier).id,
+      'owner.id': (this.$authService.currentUser as IResourceIdentifier).id,
     }).pipe((obs) => obs.pipe(
       switchMap((secrets) => combineLatest(
         secrets.map((s) => $hclwService.createSecret($authService.key, s.attributes.content)),

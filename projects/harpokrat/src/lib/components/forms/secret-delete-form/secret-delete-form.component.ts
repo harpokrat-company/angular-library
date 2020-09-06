@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Resource} from "../../../models/resource";
-import {SecretService} from "../../../services/secret.service";
-import {Secret} from "@harpokrat/hcl";
+import {SecretService} from '../../../services/secret.service';
+import {ISecretResource} from '@harpokrat/client';
 
 @Component({
   selector: 'hpk-secret-delete-form',
@@ -10,7 +9,7 @@ import {Secret} from "@harpokrat/hcl";
 })
 export class SecretDeleteFormComponent implements OnInit {
 
-  @Input() secret: Resource<Secret>;
+  @Input() secret: ISecretResource;
 
   constructor(
     readonly secretService: SecretService,

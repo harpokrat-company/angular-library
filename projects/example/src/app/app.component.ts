@@ -1,12 +1,11 @@
 import {Component} from '@angular/core';
 import {Observable} from 'rxjs';
-import {AuthService} from "../../../harpokrat/src/lib/services/auth.service";
-import {SecretService} from "../../../harpokrat/src/lib/services/secret.service";
-import {HclwService, Secret} from "@harpokrat/hcl";
-import {map, tap} from "rxjs/operators";
-import {Resource} from "../../../harpokrat/src/lib/models/resource";
-import {SecureAction} from "../../../harpokrat/src/lib/models/domain/secure-action";
+import {AuthService} from '../../../harpokrat/src/lib/services/auth.service';
+import {SecretService} from '../../../harpokrat/src/lib/services/secret.service';
+import {HclwService, Secret} from '@harpokrat/hcl';
+import {map} from 'rxjs/operators';
 import {fromPromise} from 'rxjs/internal-compatibility';
+import {IResource, ISecureActionResource} from '@harpokrat/client';
 
 @Component({
   selector: 'app-root',
@@ -15,8 +14,8 @@ import {fromPromise} from 'rxjs/internal-compatibility';
 })
 export class AppComponent {
 
-  readonly sampleSecret: Observable<Resource<Secret>>;
-  readonly sampleSecureAction: Resource<SecureAction>;
+  readonly sampleSecret: Observable<IResource<Secret>>;
+  readonly sampleSecureAction: ISecureActionResource;
 
   readonly authenticatedObservable: Observable<boolean>;
 
@@ -39,12 +38,11 @@ export class AppComponent {
         s.login = 'B';
         s.password = 'C';
         s.domain = 'D';
-        return new Resource(
-          '',
-          'aled',
-          null,
-          s
-        );
+        return {
+          type: '',
+          id: 'aled',
+          attributes: s,
+        };
       }),
     );
   }

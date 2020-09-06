@@ -1,17 +1,17 @@
 import {Inject, Injectable} from '@angular/core';
 import {ResourceService} from './resource.service';
+import {IGroup} from '@harpokrat/client';
 import {ApiService} from './api.service';
-import {ISecret} from '@harpokrat/client';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SecretService extends ResourceService<ISecret> {
+export class GroupService extends ResourceService<IGroup> {
 
   constructor(
     apiService: ApiService,
     @Inject('serverUrl') serverUrl: string,
   ) {
-    super(apiService, 'secrets', apiService.client.secrets);
+    super(apiService, 'groups', apiService.client.groups);
   }
 }

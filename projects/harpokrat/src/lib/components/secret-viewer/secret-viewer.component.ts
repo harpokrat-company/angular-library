@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Secret} from "@harpokrat/hcl";
+import {Secret} from '@harpokrat/hcl';
 
 @Component({
   selector: 'hpk-secret-viewer',

@@ -1,11 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AuthService} from "../../services/auth.service";
-import {map, switchMap} from "rxjs/operators";
-import {merge, Observable, of, Subject} from "rxjs";
-import {User} from "../../models/domain/user";
-import {UserService} from "../../services/user.service";
-import {ResourceIdentifier} from "../../models/resource-identifier";
-import {Resource} from "../../models/resource";
+import {AuthService} from '../../services/auth.service';
+import {map, switchMap} from 'rxjs/operators';
+import {merge, Observable, of, Subject} from 'rxjs';
+import {UserService} from '../../services/user.service';
+import {IResourceIdentifier, IUserResource} from '@harpokrat/client';
 
 @Component({
   selector: 'hpk-profile',
@@ -16,19 +14,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   edit: boolean;
 
-  readonly userObservable: Observable<Resource<User>>;
+  readonly userObservable: Observable<IUserResource>;
 
-  readonly userSubject: Subject<Resource<User>>;
+  readonly userSubject: Subject<IUserResource>;
 
   constructor(
     private readonly $authService: AuthService,
     private readonly $userService: UserService,
   ) {
-    this.userSubject = new Subject<Resource<User>>();
+    this.userSubject = new Subject<IUserResource>();
     this.userObservable = merge(
       $authService.tokenObservable.pipe(
         map((token) => token && $authService.currentUser),
-        switchMap((linkage) => linkage == null ? of(null) : $userService.read((linkage as ResourceIdentifier).id)),
+        switchMap((linkage) => linkage == null ? of(null) : $userService.read((linkage as IResourceIdentifier).id)),
       ),
       this.userSubject,
     );
@@ -42,7 +40,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.userSubject.complete();
   }
 
-  onRegister(user: Resource<User>) {
+  onRegister(user: IUserResource) {
     this.edit = false;
   }
 }

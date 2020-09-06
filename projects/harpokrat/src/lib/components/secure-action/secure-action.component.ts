@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {SecureAction} from "../../models/domain/secure-action";
-import {Resource} from "../../models/resource";
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
+import {ISecureActionResource} from '@harpokrat/client';
 
 @Component({
   selector: 'hpk-secure-action',
@@ -12,7 +11,7 @@ export class SecureActionComponent implements OnInit {
 
   @Input() token: string;
 
-  @Input() secureAction: Resource<SecureAction>;
+  @Input() secureAction: ISecureActionResource;
 
   constructor(
     private readonly $router: Router,

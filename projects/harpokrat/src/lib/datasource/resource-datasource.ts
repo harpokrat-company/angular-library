@@ -1,13 +1,13 @@
-import {Datasource} from "./datasource";
-import {BehaviorSubject, combineLatest, Observable} from "rxjs";
-import {Filters, ResourceService} from "../services/resource.service";
-import {debounceTime, map, shareReplay, switchMap} from "rxjs/operators";
-import {Resource} from "../models/resource";
-import {DerivedDatasource} from "./derived-datasource";
+import {Datasource} from './datasource';
+import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
+import {Filters, ResourceService} from '../services/resource.service';
+import {debounceTime, map, shareReplay, switchMap} from 'rxjs/operators';
+import {DerivedDatasource} from './derived-datasource';
+import {IResource} from '@harpokrat/client';
 
 export class ResourceDatasource<T = any> implements Datasource {
 
-  private readonly $dataObservable: Observable<Resource<T>[]>;
+  private readonly $dataObservable: Observable<IResource<T>[]>;
   private readonly $pageSubject: BehaviorSubject<number>;
   private readonly $sizeSubject: BehaviorSubject<number>;
   private readonly $sortSubject: BehaviorSubject<string>;
@@ -89,7 +89,7 @@ export class ResourceDatasource<T = any> implements Datasource {
     this.$loading = false;
   }
 
-  pipe<S>(mapper: (obs: Observable<Resource<T>[]>) => Observable<S[]>): Datasource<S> {
+  pipe<S>(mapper: (obs: Observable<IResource<T>[]>) => Observable<S[]>): Datasource<S> {
     return new DerivedDatasource(this, mapper(this.$dataObservable));
   }
 

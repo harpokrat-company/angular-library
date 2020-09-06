@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Datasource} from "../../../datasource/datasource";
+import {Datasource} from '../../../datasource/datasource';
 
 @Component({
   selector: 'hpk-pager',

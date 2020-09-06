@@ -1,8 +1,8 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {TokenService} from "../../../services/token.service";
-import {Token} from "../../../models/domain/token";
-import {AuthService} from "../../../services/auth.service";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {TokenService} from '../../../services/token.service';
+import {AuthService} from '../../../services/auth.service';
+import {IToken} from '@harpokrat/client';
 
 @Component({
   selector: 'hpk-login-form',
@@ -17,14 +17,14 @@ export class LoginFormComponent implements OnInit {
 
   loading: boolean;
 
-  @Output() readonly login: EventEmitter<Token>;
+  @Output() readonly login: EventEmitter<IToken>;
 
   constructor(
     private readonly $formBuilder: FormBuilder,
     private readonly $tokenService: TokenService,
     private readonly $authService: AuthService
   ) {
-    this.login = new EventEmitter<Token>();
+    this.login = new EventEmitter<IToken>();
   }
 
   ngOnInit() {

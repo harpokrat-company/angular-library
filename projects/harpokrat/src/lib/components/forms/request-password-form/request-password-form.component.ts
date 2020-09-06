@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {SecureActionService} from "../../../services/secure-action.service";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {SecureActionService} from '../../../services/secure-action.service';
 
 @Component({
   selector: 'hpk-request-password-form',
@@ -41,7 +41,7 @@ export class RequestPasswordFormComponent implements OnInit {
       },
       () => {
         this.loading = false;
-        this.error = 'An Error Occurred'
+        this.error = 'An Error Occurred';
       }
     );
   }

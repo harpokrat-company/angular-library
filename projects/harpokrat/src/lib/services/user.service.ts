@@ -1,15 +1,15 @@
 import {Inject, Injectable} from '@angular/core';
 import {ResourceService} from './resource.service';
 import {ApiService} from './api.service';
-import {User} from '../models/domain/user';
+import {IUser} from '@harpokrat/client';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService extends ResourceService<User> {
+export class UserService extends ResourceService<IUser> {
 
   constructor(apiService: ApiService,
               @Inject('serverUrl') serverUrl: string) {
-    super(apiService, `${serverUrl}/users`, 'users', apiService.client.users);
+    super(apiService, 'users', apiService.client.users);
   }
 }

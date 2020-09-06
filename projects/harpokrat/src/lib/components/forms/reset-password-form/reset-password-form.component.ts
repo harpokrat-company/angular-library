@@ -1,11 +1,10 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {SecureActionService} from "../../../services/secure-action.service";
-import {SecureAction} from "../../../models/domain/secure-action";
-import {Resource} from "../../../models/resource";
-import {HclwService} from "@harpokrat/hcl";
-import {switchMap} from "rxjs/operators";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {SecureActionService} from '../../../services/secure-action.service';
+import {HclwService} from '@harpokrat/hcl';
+import {switchMap} from 'rxjs/operators';
 import {fromPromise} from 'rxjs/internal-compatibility';
+import {ISecureActionResource} from '@harpokrat/client';
 
 @Component({
   selector: 'hpk-reset-password-form',
@@ -24,7 +23,7 @@ export class ResetPasswordFormComponent implements OnInit {
 
   @Input() token: string;
 
-  @Input() secureAction: Resource<SecureAction>;
+  @Input() secureAction: ISecureActionResource;
 
   constructor(
     private readonly $fb: FormBuilder,
@@ -58,7 +57,7 @@ export class ResetPasswordFormComponent implements OnInit {
       },
       () => {
         this.loading = false;
-        this.error = 'An Error Occurred'
+        this.error = 'An Error Occurred';
       }
     );
   }

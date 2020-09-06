@@ -40,7 +40,7 @@ export class DerivedDatasource<T = any> implements Datasource<T> {
   }
 
   constructor(
-    private readonly $parent: Datasource<any>,
+    private readonly $parent: Datasource,
     readonly data: Observable<T[]>,
   ) {
   }

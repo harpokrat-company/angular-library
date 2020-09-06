@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Secret} from "@harpokrat/hcl";
-import {Resource} from "../../models/resource";
+import {Secret} from '@harpokrat/hcl';
+import {IResource} from '@harpokrat/client';
 
 enum SecretStatus {
   VIEW = 0,
@@ -15,7 +15,7 @@ enum SecretStatus {
 })
 export class SecretComponent implements OnInit {
 
-  @Input() secret: Resource<Secret>;
+  @Input() secret: IResource<Secret>;
 
   status: SecretStatus;
 

@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {Resource} from "../../../models/resource";
-import {ResourceService} from "../../../services/resource.service";
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {ResourceService} from '../../../services/resource.service';
+import {IResource} from '@harpokrat/client';
 
 @Component({
   selector: 'hpk-delete-form',
@@ -16,7 +16,7 @@ export class DeleteFormComponent implements OnInit {
 
   loading: boolean;
 
-  @Input() resource: Resource;
+  @Input() resource: IResource;
 
   @Input() service: ResourceService;
 
@@ -36,7 +36,7 @@ export class DeleteFormComponent implements OnInit {
       (err) => {
         console.error(err);
         this.loading = false;
-        this.error = 'An error occurred'
+        this.error = 'An error occurred';
       },
     );
   }

@@ -23,11 +23,14 @@ import {ResetPasswordFormComponent} from './components/forms/reset-password-form
 import {ProfileComponent} from './components/profile/profile.component';
 import {ProfileViewerComponent} from './components/profile-viewer/profile-viewer.component';
 import {HclwService} from '@harpokrat/hcl';
+import {RecaptchaFormsModule, RecaptchaModule} from 'ng-recaptcha';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    RecaptchaModule,
+    RecaptchaFormsModule,
     HttpClientModule,
     ReactiveFormsModule,
     RouterModule,

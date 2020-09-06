@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {SecureAction} from "../../../models/domain/secure-action";
-import {SecureActionService} from "../../../services/secure-action.service";
-import {Resource} from "../../../models/resource";
+import {SecureActionService} from '../../../services/secure-action.service';
+import {ISecureActionResource} from '@harpokrat/client';
 
 @Component({
   selector: 'hpk-validate-email-address-form',
@@ -10,11 +9,11 @@ import {Resource} from "../../../models/resource";
 })
 export class ValidateEmailAddressFormComponent implements OnInit {
 
-  @Input() secureAction: Resource<SecureAction>;
+  @Input() secureAction: ISecureActionResource;
 
   @Input() token: string;
 
-  @Output() validated = new EventEmitter<Resource<SecureAction>>();
+  @Output() validated = new EventEmitter<ISecureActionResource>();
 
   constructor(
     private readonly $secureActionService: SecureActionService,
