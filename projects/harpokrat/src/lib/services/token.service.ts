@@ -22,9 +22,11 @@ export class TokenService {
       email,
       password,
     };
+    console.log(this.apiService.client.auth);
     return fromPromise(
       this.apiService.client.jsonWebTokens.create(),
     ).pipe(
+      tap((t) => console.log(t)),
       tap(token => this.authService.token = token),
       shareReplay(1),
     );

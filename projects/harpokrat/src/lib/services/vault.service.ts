@@ -1,6 +1,6 @@
 import {Inject, Injectable} from '@angular/core';
 import {ResourceService} from './resource.service';
-import {IGroup, IVault} from '@harpokrat/client';
+import {IVault} from '@harpokrat/client';
 import {ApiService} from './api.service';
 
 @Injectable({

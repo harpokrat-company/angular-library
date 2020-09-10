@@ -1,18 +1,17 @@
-import {Injectable} from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {IResourceLinkage, ITokenResource} from '@harpokrat/client';
+import {HclwService, SymmetricKey} from "@harpokrat/hcl";
 
 const LOCAL_STORAGE_TOKEN_KEY = 'token';
 const LOCAL_STORAGE_KEY = 'key';
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
-  private $key: string;
+  symKey: SymmetricKey;
 
   private readonly $tokenSubject: BehaviorSubject<ITokenResource>;
 
@@ -40,17 +39,27 @@ export class AuthService {
   }
 
   get key(): string {
-    return this.$key;
+    return this.symKey && this.symKey.key;
   }
 
   set key(val: string) {
-    this.$key = val;
+    this.hclwService.createSymmetricKey().then((k) => {
+      console.log('Created symkey of type: ' + k.typeName);
+      console.log('Encryption type: ' + k.encryptionKeyType);
+      this.symKey = k;
+      this.symKey.key = val;
+    });
     localStorage.setItem(LOCAL_STORAGE_KEY, val);
   }
 
-  constructor() {
+  constructor(
+    @Inject('hcl') private readonly hclwService: HclwService,
+  ) {
+    window['hclw'] = hclwService;
+    this.hclwService.instantiateWasm('https://static.harpokrat.com/hcl/hcl2.wasm').then(() => {
+      this.key = localStorage.getItem(LOCAL_STORAGE_KEY);
+    });
     this.$tokenSubject = new BehaviorSubject<ITokenResource>(null);
-    this.$key = localStorage.getItem(LOCAL_STORAGE_KEY);
     const existing = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
     if (existing) {
       this.$tokenSubject.next(JSON.parse(existing));

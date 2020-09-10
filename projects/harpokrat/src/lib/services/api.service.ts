@@ -1,6 +1,7 @@
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Inject, Injectable} from '@angular/core';
 import {HarpokratApi, IHarpokratApi, IMeta} from '@harpokrat/client';
+import {HclwService} from "@harpokrat/hcl";
 
 export type QueryParams = HttpParams | { [param: string]: string | string[] };
 export type RequestHeaders = HttpHeaders | { [param: string]: string | string[] };
@@ -20,10 +21,12 @@ export class ApiService {
 
   protected constructor(
     private httpClient: HttpClient,
+    @Inject('hcl') private hclwService: HclwService,
     @Inject('serverUrl') private readonly serverUrl: string,
   ) {
     this.client = new HarpokratApi({
       apiUrl: this.serverUrl,
+      hclw: hclwService,
       requester: <T>(url, options) => {
         console.log('REQUEST: ' + url);
         return this.httpClient.request<T>(options.method || 'GET', url, {

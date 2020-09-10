@@ -12,11 +12,39 @@
   </div>
   <ng-container *ngIf="authenticatedObservable | async">
     <div class="my-3">
+      <h3>Table</h3>
+      <hpk-secrets-table></hpk-secrets-table>
+    </div>
+    <div class="my-3">
       <h3>Create Secret</h3>
       <hpk-secret-form></hpk-secret-form>
     </div>
     <div *ngIf="sampleSecret | async as s">
       <hpk-secret [secret]="s"></hpk-secret>
+    </div>
+    <div class="my-3">
+      <h3>Create Org</h3>
+      <hpk-organisation-form></hpk-organisation-form>
+    </div>
+    <div class="my-3">
+      <h3>Delete Org</h3>
+      <hpk-organisation-delete-form [organisation]="sampleOrg"></hpk-organisation-delete-form>
+    </div>
+    <div class="my-3">
+      <h3>Create Group</h3>
+      <hpk-group-form></hpk-group-form>
+    </div>
+    <div class="my-3">
+      <h3>Delete Group</h3>
+      <hpk-group-delete-form [group]="sampleGroup"></hpk-group-delete-form>
+    </div>
+    <div class="my-3">
+      <h3>Create Vault</h3>
+      <hpk-vault-form></hpk-vault-form>
+    </div>
+    <div class="my-3">
+      <h3>Delete Vault</h3>
+      <hpk-vault-delete-form [vault]="sampleVault"></hpk-vault-delete-form>
     </div>
   </ng-container>
 </div>

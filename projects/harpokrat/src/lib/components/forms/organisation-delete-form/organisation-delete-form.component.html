@@ -1,0 +1,4 @@
+<div *ngIf="organisation">
+  <h5>Are you sure you want to delete {{organisation.attributes.name}} ?</h5>
+  <hpk-delete-form [service]="organizationService" [resource]="organisation"></hpk-delete-form>
+</div>

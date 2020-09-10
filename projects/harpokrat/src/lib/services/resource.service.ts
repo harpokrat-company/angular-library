@@ -1,8 +1,7 @@
 import {ApiService} from './api.service';
-import {Observable} from 'rxjs';
+import {defer, Observable} from 'rxjs';
 import {ResourceDatasource} from '../datasource/resource-datasource';
 import {IMeta, IRelationships, IResource, IResourceEndpoint} from '@harpokrat/client';
-import {fromPromise} from 'rxjs/internal-compatibility';
 
 export interface Filters {
   [key: string]: any;
@@ -30,22 +29,22 @@ export abstract class ResourceService<T = any> {
   protected constructor(
     private apiService: ApiService,
     private resourceType,
-    private readonly endpoint: IResourceEndpoint<T>,
+    readonly endpoint: IResourceEndpoint<T>,
   ) {
   }
 
   read(resourceId: string): Observable<IResource<T>> {
-    return fromPromise(this.endpoint.read(resourceId));
+    return defer(() => this.endpoint.read(resourceId));
   }
 
   readAll({
-            page = 0,
+            page = 1,
             size = 20,
             sort,
             sortDescending = false,
             filters = []
           }: PaginationOptions = {}): Observable<IResource<T>[]> {
-    return fromPromise(this.endpoint.readMany({
+    return defer(() => this.endpoint.readMany({
       page,
       size,
       sort,
@@ -59,17 +58,16 @@ export abstract class ResourceService<T = any> {
       attributes,
       type: this.resourceType,
       relationships,
-      meta,
     };
-    return fromPromise(this.endpoint.create(resource));
+    return defer(() => this.endpoint.create(resource, {meta}));
   }
 
   update(resourceId: string, resource: IResource<Partial<T>>, meta?: IMeta): Observable<IResource<T>> {
-    return fromPromise(this.endpoint.update(resourceId, resource, {meta}));
+    return defer(() => this.endpoint.update(resourceId, resource, {meta}));
   }
 
   delete(resourceId: string, meta?: IMeta): Observable<void> {
-    return fromPromise(this.endpoint.delete(resourceId, {meta}));
+    return defer(() => this.endpoint.delete(resourceId, {meta}));
   }
 
   asDatasource(filters: Filters): ResourceDatasource<T> {

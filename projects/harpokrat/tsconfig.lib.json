@@ -15,7 +15,12 @@
     "lib": [
       "dom",
       "es2018"
-    ]
+    ],
+    "paths": {
+      "@harpokrat/hcl/lib/hclw.service": [
+        "./node_modules/harpokrat/hcl"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "skipTemplateCodegen": true,

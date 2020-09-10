@@ -1,12 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../../../services/user.service';
 import {HclwService} from '@harpokrat/hcl';
 import {flatMap, map, switchMap, take} from 'rxjs/operators';
 import {AuthService} from '../../../services/auth.service';
 import {SecretService} from '../../../services/secret.service';
-import {combineLatest, Observable} from 'rxjs';
-import {fromPromise} from 'rxjs/internal-compatibility';
+import {combineLatest, defer, Observable} from 'rxjs';
 import {IResource, IResourceIdentifier, ISecret, IUser} from '@harpokrat/client';
 import {RecaptchaService} from '../../../services/recaptcha.service';
 
@@ -70,6 +69,11 @@ export class RegisterFormComponent implements OnInit {
   private async renewSecrets(oldKey: string, newKey: string) {
     let page = 0;
     let secrets: IResource<ISecret>[];
+    const oldSym = await this.$hclwService.createSymmetricKey();
+    oldSym.key = oldKey;
+    const newSym = await this.$hclwService.createSymmetricKey();
+    newSym.key = newKey;
+    newSym.initializeSymmetric();
     do {
       secrets = await this.$secretsService.readAll({
         page,
@@ -78,10 +82,10 @@ export class RegisterFormComponent implements OnInit {
         },
       }).pipe(
         flatMap((se) => combineLatest(se.map((secret) => {
-          return fromPromise(this.$hclwService.createSecret(oldKey, secret.attributes.content)).pipe(
+          return defer(() => this.$hclwService.deserializeSecret(oldSym.secret, secret.attributes.content)).pipe(
             switchMap((s) => this.$secretsService.update(secret.id, {
               ...secret, attributes: {
-                content: s.getContent(newKey),
+                content: newSym.serialize(newSym.secret),
               },
             })),
           );
@@ -95,8 +99,8 @@ export class RegisterFormComponent implements OnInit {
   onRegister() {
     this.loading = true;
     const {firstName, lastName, email, password, captcha} = this.registerForm.controls;
-    fromPromise(this.$hclwService.getDerivedKey(password.value)).pipe(
-      flatMap((derived) => {
+    defer(() => this.$hclwService.getDerivedKey(password.value)).pipe(
+      switchMap((derived) => {
         const attributes = {
           firstName: firstName.value,
           lastName: lastName.value,
@@ -113,7 +117,7 @@ export class RegisterFormComponent implements OnInit {
           return obs;
         } else {
           return this.$userService.create(attributes, null, {
-            'g-recaptcha-response': captcha.value,
+            'captcha': captcha.value,
           });
         }
       }),

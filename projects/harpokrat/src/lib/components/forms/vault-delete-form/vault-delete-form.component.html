@@ -1,0 +1,4 @@
+<div *ngIf="vault">
+  <h5>Are you sure you want to delete {{vault.attributes.name}} ?</h5>
+  <hpk-delete-form [service]="vaultService" [resource]="vault"></hpk-delete-form>
+</div>

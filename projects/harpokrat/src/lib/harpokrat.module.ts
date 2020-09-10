@@ -24,6 +24,12 @@ import {ProfileComponent} from './components/profile/profile.component';
 import {ProfileViewerComponent} from './components/profile-viewer/profile-viewer.component';
 import {HclwService} from '@harpokrat/hcl';
 import {RecaptchaFormsModule, RecaptchaModule} from 'ng-recaptcha';
+import {OrganisationFormComponent} from './components/forms/organisation-form/organisation-form.component';
+import {OrganisationDeleteFormComponent} from './components/forms/organisation-delete-form/organisation-delete-form.component';
+import {GroupFormComponent} from './components/forms/group-form/group-form.component';
+import {GroupDeleteFormComponent} from './components/forms/group-delete-form/group-delete-form.component';
+import {VaultFormComponent} from './components/forms/vault-form/vault-form.component';
+import {VaultDeleteFormComponent} from './components/forms/vault-delete-form/vault-delete-form.component';
 
 @NgModule({
   imports: [
@@ -53,18 +59,39 @@ import {RecaptchaFormsModule, RecaptchaModule} from 'ng-recaptcha';
     RequestPasswordFormComponent,
     ResetPasswordFormComponent,
     ProfileComponent,
-    ProfileViewerComponent
+    ProfileViewerComponent,
+    OrganisationFormComponent,
+    OrganisationDeleteFormComponent,
+    GroupFormComponent,
+    GroupDeleteFormComponent,
+    VaultFormComponent,
+    VaultDeleteFormComponent
   ],
   exports: [
     LoginFormComponent,
+    ErrorAlertComponent,
     RegisterFormComponent,
+    ResourceTableComponent,
     SecretsTableComponent,
+    PagerComponent,
     SecretFormComponent,
+    FormComponent,
     SecretViewerComponent,
     SecretComponent,
+    SecretDeleteFormComponent,
+    DeleteFormComponent,
     SecureActionComponent,
+    ValidateEmailAddressFormComponent,
     RequestPasswordFormComponent,
-    ProfileComponent
+    ResetPasswordFormComponent,
+    ProfileComponent,
+    ProfileViewerComponent,
+    OrganisationFormComponent,
+    OrganisationDeleteFormComponent,
+    GroupFormComponent,
+    GroupDeleteFormComponent,
+    VaultFormComponent,
+    VaultDeleteFormComponent,
   ]
 })
 export class HarpokratModule {
@@ -74,6 +101,7 @@ export class HarpokratModule {
     auth: {
       loginRouterPath: string
     }): ModuleWithProviders<HarpokratModule> {
+    const service = new HclwService();
     return {
       ngModule: HarpokratModule,
       providers: [{
@@ -83,8 +111,11 @@ export class HarpokratModule {
         provide: 'loginRouterPath',
         useValue: auth.loginRouterPath
       }, {
+        provide: 'hclw',
+        useValue: service,
+      }, {
         provide: HclwService,
-        useClass: HclwService,
+        useValue: service,
       }, {
         provide: HTTP_INTERCEPTORS,
         useClass: TokenInterceptor,

@@ -1,0 +1,8 @@
+<hpk-form [formGroup]="groupForm" [loading]="loading" [error]="error" submitTitle="Save"
+          (formSubmit)="onCreate()">
+  <div class="form-group">
+    <label for="login-form--input--name">Name</label>
+    <input id="login-form--input--name" type="text" formControlName="name" placeholder="Name"
+           class="form-control">
+  </div>
+</hpk-form>
