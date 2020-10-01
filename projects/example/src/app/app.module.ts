@@ -2,8 +2,10 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {HarpokratModule} from '../../../harpokrat/src/lib/harpokrat.module';
-import {RouterModule} from '@angular/router';
 import {FormsModule} from '@angular/forms';
+import {RouterModule} from "@angular/router";
+import {HclwService} from "@harpokrat/hcl";
+import {CommonModule} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -11,9 +13,10 @@ import {FormsModule} from '@angular/forms';
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     RouterModule.forRoot([]),
-    HarpokratModule.forRoot('https://api.dev.harpokrat.com/v1/', {loginRouterPath: '/login'}),
     FormsModule,
+    HarpokratModule.forRoot('https://api.dev.harpokrat.com/v1/', {loginRouterPath: '/login'}, new HclwService()),
   ],
   providers: [],
   bootstrap: [AppComponent]

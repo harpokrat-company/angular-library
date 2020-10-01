@@ -100,8 +100,8 @@ export class HarpokratModule {
     serverUrl,
     auth: {
       loginRouterPath: string
-    }): ModuleWithProviders<HarpokratModule> {
-    const service = new HclwService();
+    },
+    service: HclwService): ModuleWithProviders<HarpokratModule> {
     return {
       ngModule: HarpokratModule,
       providers: [{
@@ -111,7 +111,7 @@ export class HarpokratModule {
         provide: 'loginRouterPath',
         useValue: auth.loginRouterPath
       }, {
-        provide: 'hclw',
+        provide: 'hcl',
         useValue: service,
       }, {
         provide: HclwService,

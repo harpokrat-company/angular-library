@@ -58,7 +58,7 @@ export class GroupFormComponent implements OnInit {
       obs = this.$groupService.create(attributes, {
         organization: this.organisation && {data: this.organisation},
         parent: this.parent && {data: this.parent},
-        members: {data: this.$authService.currentUser},
+        members: {data: [this.$authService.currentUser as any]},
       });
     }
     obs.subscribe((resource) => {

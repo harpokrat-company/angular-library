@@ -40,7 +40,7 @@ export class RegisterFormComponent implements OnInit {
   ) {
     this.register = new EventEmitter<IUser>();
     this.siteKeyObservable = $recaptchaService.configObservable.pipe(
-      map((conf) => conf.siteKey),
+      map((conf) => conf['reCAPTCHA-v2-tickbox'].siteKey),
     );
   }
 
@@ -117,7 +117,10 @@ export class RegisterFormComponent implements OnInit {
           return obs;
         } else {
           return this.$userService.create(attributes, null, {
-            'captcha': captcha.value,
+            'captcha': {
+              'type': 'reCAPTCHA-v2-tickbox',
+              'response': captcha.value,
+            },
           });
         }
       }),
