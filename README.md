@@ -2,7 +2,7 @@
 
 This Project is a Angular Workspace containing all projects related to the Harpokrat Angular Client Library
 
-You can read more about how to use the library in the [Library README.md](./src/harpokrat/README.md)
+You can read more about how to use the library in the [Library README.md](./projects/harpokrat/README.md)
 
 ## Build
 
