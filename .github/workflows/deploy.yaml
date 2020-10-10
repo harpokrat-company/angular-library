@@ -19,6 +19,10 @@ jobs:
           npm config set @harpokrat:registry https://${{ secrets.NPM_REGISTRY }}/
           npm config set //${{ secrets.NPM_REGISTRY }}/:_authToken ${{ secrets.NPM_AUTH_TOKEN }}
           npm install
+      - name: Build package
+        run: |
+          npm run package
       - name: Publish Package
         run: |
+          cd delivery/harpokrat
           npm publish --registry https://npm-registry.harpokrat.net
