@@ -1,12 +1,12 @@
 {
   "name": "@harpokrat/api",
-  "version": "0.0.43",
+  "version": "0.0.44",
   "dependencies": {
     "tslib": "^2.0.0"
   },
   "peerDependencies": {
-    "@angular/common": "^9.1.4",
-    "@angular/core": "^9.1.4",
+    "@angular/common": "^10.1.5",
+    "@angular/core": "^10.1.5",
     "@harpokrat/client": "^0.0.16",
     "@harpokrat/hcl": "^0.1.15"
   }
