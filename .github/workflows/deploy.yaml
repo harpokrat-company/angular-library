@@ -1,9 +1,6 @@
 name: Deploy
 
-on:
-  push:
-    branches:
-      - master
+on: [push]
 
 jobs:
   build:
@@ -14,15 +11,17 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '14'
+      - name: Package Version Updated
+        uses: MontyD/package-json-updated-action@1.0.1
       - name: Install dependencies
+        if: steps.version-updated.outputs.has-updated
         run: |
           npm config set @harpokrat:registry https://${{ secrets.NPM_REGISTRY }}/
           npm config set //${{ secrets.NPM_REGISTRY }}/:_authToken ${{ secrets.NPM_AUTH_TOKEN }}
           npm install
-      - name: Build package
+      - name: Build and Publish Package
+        if: steps.version-updated.outputs.has-updated
         run: |
           npm run package
-      - name: Publish Package
-        run: |
           cd dist/harpokrat
           npm publish --registry https://npm-registry.harpokrat.net
