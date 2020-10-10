@@ -1,6 +1,9 @@
 {
   "name": "@harpokrat/api",
   "version": "0.0.41",
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
   "peerDependencies": {
     "@angular/common": "^9.1.4",
     "@angular/core": "^9.1.4",
