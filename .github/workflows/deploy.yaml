@@ -13,6 +13,8 @@ jobs:
           node-version: '14'
       - name: Package Version Updated
         uses: MontyD/package-json-updated-action@1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Install dependencies
         if: steps.version-updated.outputs.has-updated
         run: |
