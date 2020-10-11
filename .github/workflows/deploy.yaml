@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   push:
-    branches: 
+    branches:
       - master
 
 jobs:
@@ -16,8 +16,13 @@ jobs:
           node-version: '14'
       - name: Package Version Updated
         uses: MontyD/package-json-updated-action@1.0.1
+        id: version-updated
+        with:
+          path: projects/harpokrat/package.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Print Version
+        run: echo "${{ steps.version-updated.outputs.has-updated }} ${{ steps.version-updated.outputs.current-package-version }}"
       - name: Install dependencies
         if: steps.version-updated.outputs.has-updated
         run: |
@@ -30,3 +35,14 @@ jobs:
           npm run package
           cd dist/harpokrat
           npm publish --registry https://npm-registry.harpokrat.net
+      - name: Create Release
+        if: steps.version-updated.outputs.has-updated
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.version-updated.outputs.current-package-version }}
+          release_name: v${{ steps.version-updated.outputs.current-package-version }}
+          draft: false
+          prerelease: true
