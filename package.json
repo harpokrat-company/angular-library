@@ -23,7 +23,7 @@
     "@angular/router": "~10.1.5",
     "@harpokrat/client": "^0.1.4",
     "@harpokrat/hcl": "^0.1.20",
-    "bootstrap": "^4.3.1",
+    "bootstrap": "^4.5.2",
     "core-js": "^2.5.4",
     "ng-recaptcha": "~6.0.2",
     "rxjs": "~6.5.4",
