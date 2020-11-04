@@ -31,8 +31,10 @@ import {GroupDeleteFormComponent} from './components/forms/group-delete-form/gro
 import {VaultFormComponent} from './components/forms/vault-form/vault-form.component';
 import {VaultDeleteFormComponent} from './components/forms/vault-delete-form/vault-delete-form.component';
 import {UserSearchInputComponent} from './components/inputs/user-search-input/user-search-input.component';
-import { UserIconComponent } from './components/user-icon/user-icon.component';
-import { UserListComponent } from './components/user-list/user-list.component';
+import {UserIconComponent} from './components/user-icon/user-icon.component';
+import {UserListComponent} from './components/user-list/user-list.component';
+import {ClickOutsideModule} from 'ng-click-outside';
+
 
 @NgModule({
   imports: [
@@ -43,6 +45,7 @@ import { UserListComponent } from './components/user-list/user-list.component';
     HttpClientModule,
     ReactiveFormsModule,
     RouterModule,
+    ClickOutsideModule,
   ],
   declarations: [
     LoginFormComponent,

@@ -48,12 +48,11 @@ export class VaultFormComponent implements OnInit {
       name: name.value,
     };
     if (this.vault) {
+      const copy = {...this.vault};
+      delete copy.relationships;
       obs = this.$vaultService.update(this.vault.id, {
-        ...this.vault,
+        ...copy,
         attributes,
-        relationships: {
-          owner: {data: this.group || this.$authService.currentUser}
-        }
       });
     } else {
       obs = this.$vaultService.create(attributes, {

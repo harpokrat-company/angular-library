@@ -25,6 +25,7 @@
     "@harpokrat/hcl": "^0.1.21",
     "bootstrap": "^4.5.2",
     "core-js": "^3.6.5",
+    "ng-click-outside": "^7.0.0",
     "ng-recaptcha": "~6.0.2",
     "rxjs": "~6.5.4",
     "tslib": "^2.0.0",

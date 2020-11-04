@@ -1,17 +1,19 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ControlValueAccessor} from "@angular/forms";
+import {Component, forwardRef, OnDestroy, OnInit} from '@angular/core';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {UserService} from "../../../services/user.service";
 import {BehaviorSubject, Observable} from "rxjs";
 import {IUserResource} from "@harpokrat/client";
-import {debounceTime, switchMap} from "rxjs/operators";
-
-
-
+import {debounceTime, map, switchMap} from "rxjs/operators";
 
 @Component({
   selector: 'hpk-user-search-input',
   templateUrl: './user-search-input.component.html',
-  styleUrls: ['./user-search-input.component.css']
+  styleUrls: ['./user-search-input.component.css'],
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => UserSearchInputComponent),
+    multi: true
+  }]
 })
 export class UserSearchInputComponent implements OnInit, OnDestroy, ControlValueAccessor {
 
@@ -51,7 +53,9 @@ export class UserSearchInputComponent implements OnInit, OnDestroy, ControlValue
         filters: {
           email: `%${v}%`,
         },
-      }))
+      }).pipe(
+        map((arr) => arr.filter((u) => u.attributes.email !== v)),
+      ))
     )
   }
 

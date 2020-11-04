@@ -46,8 +46,10 @@ export class OrganisationFormComponent implements OnInit {
       name: name.value,
     };
     if (this.organisation) {
+      const copy = {...this.organisation};
+      delete copy.relationships;
       obs = this.$organisationService.update(this.organisation.id, {
-        ...this.organisation,
+        ...copy,
         attributes,
       });
     } else {

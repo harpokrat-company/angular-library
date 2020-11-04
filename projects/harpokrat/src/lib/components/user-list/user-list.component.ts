@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
-import {IUser} from "@harpokrat/client";
+import {IUser, IUserResource} from "@harpokrat/client";
 
 @Component({
   selector: 'hpk-user-list',
@@ -8,11 +8,11 @@ import {IUser} from "@harpokrat/client";
 })
 export class UserListComponent implements OnInit {
 
-  @Input() users: IUser[];
+  @Input() users: IUserResource[];
 
   @Input() allowRemove: boolean = false;
 
-  @Output() remove = new EventEmitter<IUser>()
+  @Output() remove = new EventEmitter<IUserResource>()
 
   constructor() {
   }

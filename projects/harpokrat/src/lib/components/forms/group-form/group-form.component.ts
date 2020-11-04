@@ -50,8 +50,10 @@ export class GroupFormComponent implements OnInit {
       name: name.value,
     };
     if (this.group) {
+      const copy = {...this.group};
+      delete copy.relationships;
       obs = this.$groupService.update(this.group.id, {
-        ...this.group,
+        ...copy,
         attributes,
       });
     } else {
