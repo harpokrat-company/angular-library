@@ -1,0 +1,13 @@
+<div class="dropdown position-relative">
+  <input [(ngModel)]="value" [disabled]="disabled" (focusin)="open = true"
+         class="form-control" placeholder="Search Users">
+  <div class="dropdown-menu w-100" [class.show]="open" *ngIf="usersObservable | async as users">
+    <button type="button" tabindex="0" *ngFor="let user of users" class="dropdown-item"
+            (click)="value = user.attributes.email; open = false">
+      <span class="d-inline-flex align-items-center">
+        <hpk-user-icon [user]="user.attributes" class="mr-3"></hpk-user-icon>
+        <span>{{user.attributes.email}}</span>
+      </span>
+    </button>
+  </div>
+</div>

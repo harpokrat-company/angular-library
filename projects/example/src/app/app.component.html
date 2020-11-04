@@ -11,6 +11,14 @@
     <hpk-profile></hpk-profile>
   </div>
   <ng-container *ngIf="authenticatedObservable | async">
+    <div class="my-5">
+      <span>SEARCH</span>
+      <hpk-user-search-input></hpk-user-search-input>
+    </div>
+    <div class="my-5">
+      <h3>USERS</h3>
+      <hpk-user-list [users]="usersObservable | async" allowRemove></hpk-user-list>
+    </div>
     <div class="my-3">
       <h3>Table</h3>
       <hpk-secrets-table></hpk-secrets-table>

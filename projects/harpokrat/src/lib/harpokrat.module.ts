@@ -30,6 +30,9 @@ import {GroupFormComponent} from './components/forms/group-form/group-form.compo
 import {GroupDeleteFormComponent} from './components/forms/group-delete-form/group-delete-form.component';
 import {VaultFormComponent} from './components/forms/vault-form/vault-form.component';
 import {VaultDeleteFormComponent} from './components/forms/vault-delete-form/vault-delete-form.component';
+import {UserSearchInputComponent} from './components/inputs/user-search-input/user-search-input.component';
+import { UserIconComponent } from './components/user-icon/user-icon.component';
+import { UserListComponent } from './components/user-list/user-list.component';
 
 @NgModule({
   imports: [
@@ -65,7 +68,10 @@ import {VaultDeleteFormComponent} from './components/forms/vault-delete-form/vau
     GroupFormComponent,
     GroupDeleteFormComponent,
     VaultFormComponent,
-    VaultDeleteFormComponent
+    VaultDeleteFormComponent,
+    UserSearchInputComponent,
+    UserIconComponent,
+    UserListComponent
   ],
   exports: [
     LoginFormComponent,
@@ -92,6 +98,9 @@ import {VaultDeleteFormComponent} from './components/forms/vault-delete-form/vau
     GroupDeleteFormComponent,
     VaultFormComponent,
     VaultDeleteFormComponent,
+    UserSearchInputComponent,
+    UserIconComponent,
+    UserListComponent,
   ]
 })
 export class HarpokratModule {

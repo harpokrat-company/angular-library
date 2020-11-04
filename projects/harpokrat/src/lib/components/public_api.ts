@@ -16,6 +16,8 @@ export * from './forms/secret-delete-form/secret-delete-form.component';
 export * from './forms/secret-form/secret-form.component';
 export * from './forms/validate-email-address-form/validate-email-address-form.component';
 
+export * from './inputs/user-search-input/user-search-input.component';
+
 export * from './profile/profile.component';
 export * from './profile-viewer/profile-viewer.component';
 
@@ -27,3 +29,6 @@ export * from './secure-action/secure-action.component';
 export * from './tables/pager/pager.component';
 export * from './tables/resource-table/resource-table.component';
 export * from './tables/secrets-table/secrets-table.component';
+
+export * from './user-icon/user-icon.component';
+export * from './user-list/user-list.component';
