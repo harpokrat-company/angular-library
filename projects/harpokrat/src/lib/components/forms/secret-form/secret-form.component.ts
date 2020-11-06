@@ -1,11 +1,12 @@
-import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SecretService} from '../../../services/secret.service';
 import {AuthService} from '../../../services/auth.service';
-import {HclwService, Password} from '@harpokrat/hcl';
-import {flatMap} from 'rxjs/operators';
-import {defer, Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 import {IResource} from '@harpokrat/client';
+import {ApiService} from "../../../services/api.service";
+import {IPassword} from "@harpokrat/client/dist/lib/hcl/hcl-module";
 
 @Component({
   selector: 'hpk-secret-form',
@@ -20,9 +21,9 @@ export class SecretFormComponent implements OnInit {
 
   loading: boolean;
 
-  @Input() secret: IResource<Password>;
+  @Input() secret: IResource<IPassword>;
 
-  @Output() readonly create = new EventEmitter<Password>();
+  @Output() readonly create = new EventEmitter<IPassword>();
 
   @Output() readonly secretChange = this.create;
 
@@ -30,63 +31,59 @@ export class SecretFormComponent implements OnInit {
     private readonly $formBuilder: FormBuilder,
     private readonly $secretService: SecretService,
     private readonly $authService: AuthService,
-    private readonly $hclwService: HclwService,
+    private readonly $apiService: ApiService,
   ) {
   }
 
   ngOnInit() {
-    const attributes: Partial<Password> = this.secret && this.secret.attributes || {};
+    const attributes: Partial<IPassword> = this.secret && this.secret.attributes;
     this.secretForm = this.$formBuilder.group({
-      name: [attributes.name || '', Validators.required],
-      login: [attributes.login || '', Validators.required],
-      password: [attributes.password || '', Validators.required],
-      domain: [attributes.domain || '', Validators.required],
+      name: [attributes && attributes.GetName() || '', Validators.required],
+      login: [attributes && attributes.GetLogin() || '', Validators.required],
+      password: [attributes && attributes.GetPassword() || '', Validators.required],
+      domain: [attributes && attributes.GetDomain() || '', Validators.required],
     });
   }
 
-  onCreate() {
+  async onCreate() {
     this.loading = true;
     const {name, password, login, domain} = this.secretForm.controls;
-    defer(() => this.$hclwService.createPassword()).subscribe((s) => {
-      console.log('CREATE PASSWORD OK');
-      s.name = name.value;
-      s.login = login.value;
-      s.password = password.value;
-      s.domain = domain.value;
-      s.initializeSymmetric();
-      console.log(this.$authService.symKey.encryptionKeyType);
-      console.log('SET ALL OK');
-      console.log(this.$authService.symKey.secret);
-      const serialized = s.serialize(this.$authService.symKey.secret);
-      console.log(serialized);
-      let obs: Observable<any>;
-      if (this.secret) {
-        obs = this.$secretService.update(this.secret.id, {
-          ...this.secret,
-          attributes: {
-            content: serialized,
-          },
-        });
-      } else {
-        obs = this.$secretService.create({
-          content: s.serialize(this.$authService.symKey.secret),
-          private: true,
-        }, {owner: {data: this.$authService.currentUser}});
-      }
-      obs.pipe(
-        flatMap((resource) => this.$hclwService.deserializeSecret(this.$authService.symKey.secret, resource.attributes.content)),
-      ).subscribe(
-        (resource) => {
-          console.log(resource);
-          this.loading = false;
-          this.create.emit(resource as Password);
+    console.log('CREATE PASSWORD OK');
+    const hcl = await this.$apiService.hcl.getModule();
+    console.log('HCL=', hcl);
+    const s = new hcl.Password();
+    s.InitializeSymmetricCipher();
+    s.SetName(name.value);
+    s.SetLogin(login.value);
+    s.SetPassword(password.value);
+    s.SetDomain(domain.value);
+    const serialized = s.Serialize(this.$authService.key);
+    let obs: Observable<any>;
+    if (this.secret) {
+      obs = this.$secretService.update(this.secret.id, {
+        ...this.secret,
+        attributes: {
+          content: serialized,
         },
-        () => {
-          this.error = 'An error occurred';
-          this.loading = false;
-        },
-      );
-    });
+      });
+    } else {
+      obs = this.$secretService.create({
+        content: serialized,
+        private: true,
+      }, {owner: {data: this.$authService.currentUser}});
+    }
+    obs.pipe(
+      map((resource) => hcl.Secret.Deserialize(this.$authService.symKey.GetKey(), resource.attributes.content)),
+    ).subscribe(
+      (resource) => {
+        this.loading = false;
+        this.create.emit(resource as IPassword);
+      },
+      (e) => {
+        this.error = 'An error occurred';
+        this.loading = false;
+      },
+    );
   }
 
 }

@@ -2,16 +2,17 @@ import {Component} from '@angular/core';
 import {Observable} from 'rxjs';
 import {AuthService} from '../../../harpokrat/src/lib/services/auth.service';
 import {SecretService} from '../../../harpokrat/src/lib/services/secret.service';
-import {Password} from '@harpokrat/hcl';
 import {
   IGroupResource,
   IOrganizationResource,
   IResource,
-  ISecureActionResource, IUser, IUserResource,
+  ISecureActionResource,
+  IUserResource,
   IVaultResource
 } from '@harpokrat/client';
 import {UserService} from "../../../harpokrat/src/lib/services/user.service";
 import {map} from "rxjs/operators";
+import {IPassword} from "@harpokrat/client/dist/lib/hcl/hcl-module";
 
 @Component({
   selector: 'app-root',
@@ -20,9 +21,9 @@ import {map} from "rxjs/operators";
 })
 export class AppComponent {
 
-  readonly usersObservable: Observable<IUser[]>;
+  readonly usersObservable: Observable<IUserResource[]>;
 
-  readonly sampleSecret: Observable<IResource<Password>>;
+  readonly sampleSecret: Observable<IResource<IPassword>>;
   readonly sampleSecureAction: ISecureActionResource;
 
   readonly sampleOrg: IOrganizationResource;
@@ -75,9 +76,7 @@ export class AppComponent {
         name: 'Test VAULT',
       },
     };
-    this.usersObservable = this.$userService.readAll().pipe(
-      map((u) => u.map((user) => user.attributes))
-    );
+    this.usersObservable = this.$userService.readAll();
   }
 
 }

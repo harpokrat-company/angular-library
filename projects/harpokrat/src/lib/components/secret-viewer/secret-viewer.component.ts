@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Password} from '@harpokrat/hcl';
+import {IPassword} from "@harpokrat/client/dist/lib/hcl/hcl-module";
 
 @Component({
   selector: 'hpk-secret-viewer',
@@ -8,7 +8,7 @@ import {Password} from '@harpokrat/hcl';
 })
 export class SecretViewerComponent {
 
-  @Input() secret: Password;
+  @Input() secret: IPassword;
 
   constructor() {
   }

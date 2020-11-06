@@ -1,12 +1,12 @@
-import {Component, Inject, OnDestroy} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {ResourceTableConfiguration} from '../resource-table/resource-table.component';
 import {Datasource} from '../../../datasource/datasource';
 import {SecretService} from '../../../services/secret.service';
-import {HclwService, Password} from '@harpokrat/hcl';
 import {AuthService} from '../../../services/auth.service';
-import {map, switchMap} from 'rxjs/operators';
-import {combineLatest, defer} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {IResourceIdentifier} from '@harpokrat/client';
+import {ApiService} from "../../../services/api.service";
+import {IPassword} from "@harpokrat/client/dist/lib/hcl/hcl-module";
 
 @Component({
   selector: 'hpk-secrets-table',
@@ -32,21 +32,18 @@ export class SecretsTableComponent implements OnDestroy {
     ]
   };
 
-  readonly datasource: Datasource<Password>;
+  readonly datasource: Datasource<IPassword>;
 
   constructor(
     private readonly $secretService: SecretService,
     private readonly $authService: AuthService,
-    private readonly $hclwService: HclwService,
+    private readonly $apiService: ApiService,
   ) {
     this.datasource = $secretService.asDatasource({
       'owner.id': (this.$authService.currentUser as IResourceIdentifier).id,
     }).pipe((obs) => obs.pipe(
-      switchMap((secrets) => combineLatest(
-        secrets.map((s) => defer(() => $hclwService.deserializeSecret($authService.symKey.secret, s.attributes.content)).pipe(
-          map((s) => s as Password),
-        )),
-      )),
+      map((secrets) => secrets.map((s) => this.$apiService.hcl.module.Secret.Deserialize($authService.symKey.GetKey(), s.attributes.content))),
+      map((s) => s.filter((s) => s.CorrectDecryption()).map((s) => this.$apiService.hcl.cast<IPassword>(s))),
     ));
   }
 

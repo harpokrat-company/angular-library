@@ -22,7 +22,6 @@ import {RequestPasswordFormComponent} from './components/forms/request-password-
 import {ResetPasswordFormComponent} from './components/forms/reset-password-form/reset-password-form.component';
 import {ProfileComponent} from './components/profile/profile.component';
 import {ProfileViewerComponent} from './components/profile-viewer/profile-viewer.component';
-import {HclwService} from '@harpokrat/hcl';
 import {RecaptchaFormsModule, RecaptchaModule} from 'ng-recaptcha';
 import {OrganisationFormComponent} from './components/forms/organisation-form/organisation-form.component';
 import {OrganisationDeleteFormComponent} from './components/forms/organisation-delete-form/organisation-delete-form.component';
@@ -109,11 +108,11 @@ import {ClickOutsideModule} from 'ng-click-outside';
 export class HarpokratModule {
 
   static forRoot(
-    serverUrl,
+    serverUrl: string,
     auth: {
       loginRouterPath: string
     },
-    service: HclwService): ModuleWithProviders<HarpokratModule> {
+    wasmUrl: string = 'https://static.harpokrat.com/hcl/hcl2.wasm'): ModuleWithProviders<HarpokratModule> {
     return {
       ngModule: HarpokratModule,
       providers: [{
@@ -123,11 +122,8 @@ export class HarpokratModule {
         provide: 'loginRouterPath',
         useValue: auth.loginRouterPath
       }, {
-        provide: 'hcl',
-        useValue: service,
-      }, {
-        provide: HclwService,
-        useValue: service,
+        provide: 'wasmUrl',
+        useValue: wasmUrl,
       }, {
         provide: HTTP_INTERCEPTORS,
         useClass: TokenInterceptor,

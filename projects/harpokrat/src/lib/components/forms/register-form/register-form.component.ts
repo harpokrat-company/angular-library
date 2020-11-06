@@ -1,13 +1,14 @@
-import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../../../services/user.service';
-import {HclwService} from '@harpokrat/hcl';
-import {flatMap, map, switchMap, take} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import {AuthService} from '../../../services/auth.service';
 import {SecretService} from '../../../services/secret.service';
-import {combineLatest, defer, Observable} from 'rxjs';
-import {IResource, IResourceIdentifier, ISecret, IUser} from '@harpokrat/client';
+import {combineLatest, Observable} from 'rxjs';
+import {IResource, IResourceIdentifier, IUser} from '@harpokrat/client';
 import {RecaptchaService} from '../../../services/recaptcha.service';
+import {ApiService} from "../../../services/api.service";
+import {fromPromise} from "rxjs/internal-compatibility";
 
 @Component({
   selector: 'hpk-register-form',
@@ -34,7 +35,7 @@ export class RegisterFormComponent implements OnInit {
     private readonly $formBuilder: FormBuilder,
     private readonly $userService: UserService,
     private readonly $authService: AuthService,
-    private readonly $hclwService: HclwService,
+    private readonly $apiService: ApiService,
     private readonly $secretsService: SecretService,
     private readonly $recaptchaService: RecaptchaService,
   ) {
@@ -68,12 +69,12 @@ export class RegisterFormComponent implements OnInit {
 
   private async renewSecrets(oldKey: string, newKey: string) {
     let page = 0;
-    let secrets: IResource<ISecret>[];
-    const oldSym = await this.$hclwService.createSymmetricKey();
-    oldSym.key = oldKey;
-    const newSym = await this.$hclwService.createSymmetricKey();
-    newSym.key = newKey;
-    newSym.initializeSymmetric();
+    let secrets: IResource[];
+    const oldSym = new this.$apiService.hcl.module.SymmetricKey();
+    oldSym.SetKey(oldKey);
+    const newSym = new this.$apiService.hcl.module.SymmetricKey();
+    newSym.InitializeSymmetricCipher();
+    newSym.SetKey(newKey);
     do {
       secrets = await this.$secretsService.readAll({
         page,
@@ -81,16 +82,14 @@ export class RegisterFormComponent implements OnInit {
           'owner.id': (this.$authService.currentUser as IResourceIdentifier).id,
         },
       }).pipe(
-        flatMap((se) => combineLatest(se.map((secret) => {
-          return defer(() => this.$hclwService.deserializeSecret(oldSym.secret, secret.attributes.content)).pipe(
-            switchMap((s) => this.$secretsService.update(secret.id, {
-              ...secret, attributes: {
-                content: newSym.serialize(newSym.secret),
-              },
-            })),
-          );
+        switchMap((se) => combineLatest(se.map((secret) => {
+          const s = this.$apiService.hcl.module.Secret.Deserialize(oldSym.GetKey(), secret.attributes.content);
+          return this.$secretsService.update(secret.id, {
+            ...secret, attributes: {
+              content: s.Serialize(newSym.GetKey()),
+            },
+          });
         }))),
-        take(1),
       ).toPromise();
       page += 1;
     } while (secrets && secrets.length > 0);
@@ -99,32 +98,30 @@ export class RegisterFormComponent implements OnInit {
   onRegister() {
     this.loading = true;
     const {firstName, lastName, email, password, captcha} = this.registerForm.controls;
-    defer(() => this.$hclwService.getDerivedKey(password.value)).pipe(
-      switchMap((derived) => {
-        const attributes = {
-          firstName: firstName.value,
-          lastName: lastName.value,
-          email: email.value,
-          password: derived,
-        };
-        if (this.user != null) {
-          const oldKey = this.$authService.key;
-          const newKey = password.value;
-          const obs = this.$userService.update(this.user.id, {...this.user, attributes});
-          if (oldKey != null && oldKey !== newKey) {
-            return this.renewSecrets(oldKey, newKey).then(() => obs.toPromise()).then(() => this.$authService.key = newKey);
-          }
-          return obs;
-        } else {
-          return this.$userService.create(attributes, null, {
-            'captcha': {
-              'type': 'reCAPTCHA-v2-tickbox',
-              'response': captcha.value,
-            },
-          });
-        }
-      }),
-    ).subscribe(
+    const derivedKey = this.$apiService.hcl.module.GetDerivedKey(password.value);
+    const attributes = {
+      firstName: firstName.value,
+      lastName: lastName.value,
+      email: email.value,
+      password: derivedKey,
+    };
+    let obs: Observable<IResource<IUser>>;
+    if (this.user != null) {
+      const oldKey = this.$authService.key;
+      const newKey = password.value;
+      obs = this.$userService.update(this.user.id, {...this.user, attributes});
+      if (oldKey != null && oldKey !== newKey) {
+        obs = fromPromise(this.renewSecrets(oldKey, newKey).then(() => obs.toPromise()).then(() => this.$authService.key = newKey));
+      }
+    } else {
+      obs = this.$userService.create(attributes, null, {
+        'captcha': {
+          'type': 'reCAPTCHA-v2-tickbox',
+          'response': captcha.value,
+        },
+      });
+    }
+    obs.subscribe(
       (resource) => {
         this.loading = false;
         this.userChange.next(resource);

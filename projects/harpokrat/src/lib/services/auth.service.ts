@@ -1,8 +1,9 @@
-import {Inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {IResourceLinkage, ITokenResource} from '@harpokrat/client';
-import {HclwService, SymmetricKey} from "@harpokrat/hcl";
+import {ISymmetricKey} from "@harpokrat/client/dist/lib/hcl/hcl-module";
+import {ApiService} from "./api.service";
 
 const LOCAL_STORAGE_TOKEN_KEY = 'token';
 const LOCAL_STORAGE_KEY = 'key';
@@ -11,7 +12,7 @@ const LOCAL_STORAGE_KEY = 'key';
   providedIn: 'root'
 })
 export class AuthService {
-  symKey: SymmetricKey;
+  symKey: ISymmetricKey;
 
   private readonly $tokenSubject: BehaviorSubject<ITokenResource>;
 
@@ -39,25 +40,27 @@ export class AuthService {
   }
 
   get key(): string {
-    return this.symKey && this.symKey.key;
+    return this.symKey && this.symKey.GetKey();
   }
 
   set key(val: string) {
-    this.hclwService.createSymmetricKey().then((k) => {
-      console.log('Created symkey of type: ' + k.typeName);
-      console.log('Encryption type: ' + k.encryptionKeyType);
+    this.apiService.hcl.getModule().then((m) => new m.SymmetricKey()).then((k) => {
+      console.log('Created symkey of type: ' + k.GetSecretTypeName());
       this.symKey = k;
-      this.symKey.key = val;
+      this.symKey.SetKey(val);
     });
     localStorage.setItem(LOCAL_STORAGE_KEY, val);
   }
 
   constructor(
-    @Inject('hcl') private readonly hclwService: HclwService,
+    private readonly apiService: ApiService,
   ) {
-    window['hclw'] = hclwService;
-    this.hclwService.instantiateWasm('https://static.harpokrat.com/hcl/hcl2.wasm').then(() => {
-      this.key = localStorage.getItem(LOCAL_STORAGE_KEY);
+    apiService.hcl.init();
+    apiService.hcl.getModule().then(() => {
+      const key = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (key) {
+        this.key = key;
+      }
     });
     this.$tokenSubject = new BehaviorSubject<ITokenResource>(null);
     const existing = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
