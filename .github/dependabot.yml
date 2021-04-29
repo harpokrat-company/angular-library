@@ -1,0 +1,29 @@
+version: 2
+registries:
+  npm-registry-npm-registry-harpokrat-net:
+    type: npm-registry
+    url: https://npm-registry.harpokrat.net
+    token: "${{secrets.NPM_REGISTRY_NPM_REGISTRY_HARPOKRAT_NET_TOKEN}}"
+
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  assignees:
+  - Bassintag
+  registries:
+  - npm-registry-npm-registry-harpokrat-net
+- package-ecosystem: npm
+  directory: "/projects/harpokrat"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  assignees:
+  - Bassintag
+  versioning-strategy: increase-if-necessary
+  registries:
+  - npm-registry-npm-registry-harpokrat-net
